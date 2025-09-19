@@ -8,6 +8,8 @@ import { SweetCard } from "@/components/SweetCard";
 import { FilterBar, FilterOptions } from "@/components/FilterBar";
 import { AuthModal } from "@/components/AuthModal";
 import { AdminDashboard } from "@/components/AdminDashboard";
+import { Testimonials } from "@/components/Testimonials";
+import { FeedbackCommunity } from "@/components/FeedbackCommunity";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -33,6 +35,15 @@ const Index = () => {
     setSweets(mockSweets);
   }, []);
 
+  // Load favorites from localStorage on component mount
+  useEffect(() => {
+    const savedFavorites = localStorage.getItem('favorites');
+    if (savedFavorites) {
+      const favoriteIds = new Set(JSON.parse(savedFavorites));
+      setFavorites(favoriteIds);
+    }
+  }, []);
+
   // Filter and sort sweets
   const filteredSweets = useMemo(() => {
     let filtered = sweets.filter(sweet => {
@@ -44,10 +55,10 @@ const Index = () => {
       const matchesPrice = filters.priceRange === 'all' || (() => {
         const price = sweet.price;
         switch (filters.priceRange) {
-          case '0-5': return price <= 5;
-          case '5-10': return price > 5 && price <= 10;
-          case '10-20': return price > 10 && price <= 20;
-          case '20+': return price > 20;
+          case '0-200': return price <= 200;
+          case '200-300': return price > 200 && price <= 300;
+          case '300-400': return price > 300 && price <= 400;
+          case '400+': return price > 400;
           default: return true;
         }
       })();
@@ -187,9 +198,21 @@ const Index = () => {
       const newFavorites = new Set(prev);
       if (newFavorites.has(sweetId)) {
         newFavorites.delete(sweetId);
+        toast({
+          title: "Removed from favorites",
+          description: "This sweet has been removed from your favorites.",
+        });
       } else {
         newFavorites.add(sweetId);
+        toast({
+          title: "Added to favorites",
+          description: "This sweet has been added to your favorites.",
+        });
       }
+      
+      // Save to localStorage
+      localStorage.setItem('favorites', JSON.stringify(Array.from(newFavorites)));
+      
       return newFavorites;
     });
   };
@@ -210,7 +233,6 @@ const Index = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="text-6xl mb-4 animate-bounce">🧿</div>
           <p className="text-lg text-muted-foreground">Loading sweet collection...</p>
         </div>
       </div>
@@ -252,6 +274,13 @@ const Index = () => {
           onClose={() => setIsAuthModalOpen(false)}
           onLogin={handleLogin}
           onRegister={handleRegister}
+          onLogout={logout}
+          isAuthenticated={isAuthenticated}
+          user={user ? {
+            name: user.username,
+            email: user.email,
+            phone: user.phone
+          } : undefined}
         />
       </div>
     );
@@ -281,7 +310,7 @@ const Index = () => {
       <main className="container mx-auto px-4 py-12" id="sweets-section">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-3xl font-bold mb-2">Our Mithai Collection</h2>
+            <h2 className="text-3xl font-bold mb-2">Our Sweet Collection</h2>
             <p className="text-muted-foreground">Discover our carefully curated selection of traditional Indian sweets</p>
           </div>
           {isAdmin && (
@@ -301,7 +330,6 @@ const Index = () => {
 
         {!isAuthenticated ? (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">🧿</div>
             <h3 className="text-xl font-semibold mb-2">Please log in to view our mithai collection</h3>
             <p className="text-muted-foreground mb-4">Create an account or sign in to explore our sweet offerings</p>
             <Button variant="candy" onClick={() => setIsAuthModalOpen(true)}>
@@ -310,7 +338,6 @@ const Index = () => {
           </div>
         ) : filteredSweets.length === 0 ? (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">🧿</div>
             <h3 className="text-xl font-semibold mb-2">No mithai found</h3>
             <p className="text-muted-foreground">Try adjusting your search or filters</p>
           </div>
@@ -332,11 +359,21 @@ const Index = () => {
         )}
       </main>
 
+      <Testimonials />
+      <FeedbackCommunity />
+
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         onLogin={handleLogin}
         onRegister={handleRegister}
+        onLogout={logout}
+        isAuthenticated={isAuthenticated}
+        user={user ? {
+          name: user.username,
+          email: user.email,
+          phone: user.phone
+        } : undefined}
       />
     </div>
   );
