@@ -4,9 +4,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 from app.main import app
-from app.database import get_db, Base
-from app.models import User, Sweet
-from app.auth import get_password_hash
+from app.core.database import get_db, Base
+from app.models.models import User, Sweet
+from app.services.auth import get_password_hash
 
 # Create test database
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
