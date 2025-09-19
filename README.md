@@ -82,19 +82,8 @@ pytest -q
 ```
 Tests use a SQLite test database and override dependencies for isolation.
 
-## My AI Usage
-
-### AI Tools Used
-- **Claude (Anthropic)**: Primary AI assistant for development guidance
-- **GitHub Copilot**: Code completion and suggestions
-- **ChatGPT**: Alternative AI assistance for specific coding challenges
-
-### How I Used AI Tools
-
-#### 1. **Claude (Anthropic) - Primary Development Partner**
-- **Project Architecture**: Used Claude to design the overall MVC-style backend structure with FastAPI, including proper separation of concerns between models, schemas, controllers, and services
-- **Database Design**: Collaborated with Claude to design the PostgreSQL schema for users, sweets, and orders with proper relationships and constraints
-- **Authentication System**: Implemented JWT-based authentication with role-based access control using Claude's guidance on security best practices
+#### 1.Primary Development Partner**
+-
 - **Frontend Development**: Used Claude to build the React + TypeScript frontend with modern UI components, responsive design, and state management
 - **API Integration**: Developed RESTful API endpoints with proper error handling, validation, and documentation
 - **Code Optimization**: Refactored code for better performance, maintainability, and following React best practices
@@ -106,10 +95,6 @@ Tests use a SQLite test database and override dependencies for isolation.
 - **SQL Queries**: Generated complex database queries and migrations with Copilot's assistance
 - **CSS Styling**: Used Copilot for Tailwind CSS class suggestions and responsive design patterns
 
-#### 3. **ChatGPT - Alternative Perspectives**
-- **Problem Solving**: Consulted ChatGPT for alternative approaches to complex problems when initial solutions didn't work
-- **Code Review**: Used ChatGPT to review and suggest improvements for specific code sections
-- **Documentation**: Generated comprehensive documentation and README content with ChatGPT's assistance
 
 ### Reflection on AI Impact
 
