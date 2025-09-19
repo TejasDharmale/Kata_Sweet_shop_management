@@ -1,73 +1,89 @@
-# Welcome to your Lovable project
+# Sweet Shop Management (Frontend + Backend)
 
-## Project info
+A modular Sweet Shop application with a FastAPI + PostgreSQL backend and a Vite + React + TypeScript frontend. The project follows an MVC-inspired structure on the backend and a clean component architecture on the frontend.
 
-**URL**: https://lovable.dev/projects/4152066c-0e94-4a4d-94f4-a27230c6679f
+## Tech Stack
+- Backend: FastAPI, SQLAlchemy, Pydantic, JWT (python-jose), Passlib, Uvicorn
+- Database: PostgreSQL (psycopg2)
+- Frontend: Vite, React, TypeScript, Tailwind CSS, shadcn/ui
+- Testing: Pytest, HTTPX (FastAPI TestClient)
 
-## How can I edit this code?
+## Repository Structure
+```
+backend/
+  app/
+    core/         # config, database
+    models/       # SQLAlchemy models
+    schemas/      # Pydantic schemas
+    services/     # auth, deps, utils
+    controllers/  # FastAPI routers (auth, sweets)
+    main.py       # FastAPI app entry
+  tests/
+    test_sweets.py
+  run_backend.py  # uvicorn runner
+  requirements.txt
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/4152066c-0e94-4a4d-94f4-a27230c6679f) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+frontend/
+  ... Vite/React app with components, pages, images, and config
 ```
 
-**Edit a file directly in GitHub**
+## Prerequisites
+- Node.js 18+ and npm
+- Python 3.10+
+- PostgreSQL running locally
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Environment
+Set your database URL. Default is already configured for local Postgres.
+```
+DATABASE_URL=postgresql://appuser:StrongPass_123!@127.0.0.1:5432/incubytes
+```
+If you want to override, create a `.env` file in `backend/` and set `DATABASE_URL` there.
 
-**Use GitHub Codespaces**
+## Backend: Setup & Run
+```
+cd backend
+python -m venv .venv
+. .venv/Scripts/activate   # Windows PowerShell
+pip install -r requirements.txt
+python run_backend.py      # runs on http://localhost:8000
+```
+- Health: GET http://localhost:8000/health
+- Auth routes: `/api/auth/*`
+- Sweets routes: `/api/sweets/*`
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+On first startup, an admin user and sample sweets are seeded.
 
-## What technologies are used for this project?
+## Frontend: Setup & Run
+```
+cd frontend
+npm install
+npm run dev                 # http://localhost:5173
+```
+Update API base URL if needed in `frontend/lib/api.ts`.
 
-This project is built with:
+## Key Features
+- JWT-based authentication (login/register)
+- Role-based access for admin operations
+- CRUD for sweets with search, purchase, restock
+- Polished UI with product cards, images, and responsive layout
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## MVC-style Backend Overview
+- Models: `backend/app/models/models.py`
+- Schemas: `backend/app/schemas/schemas.py`
+- Controllers (Routers): `backend/app/controllers/*.py`
+- Services: `backend/app/services/*.py` (auth, dependencies, utility seeders)
+- Core: `backend/app/core/*` for configuration and DB session
 
-## How can I deploy this project?
+## Tests
+```
+cd backend
+pytest -q
+```
+Tests use a SQLite test database and override dependencies for isolation.
 
-Simply open [Lovable](https://lovable.dev/projects/4152066c-0e94-4a4d-94f4-a27230c6679f) and click on Share -> Publish.
+## Notes
+- CORS is enabled for Vite dev URLs: `http://localhost:5173`.
+- Images and branding are under `frontend/images/`. Header displays the provided logo.
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## License
+For assignment/evaluation purposes.
