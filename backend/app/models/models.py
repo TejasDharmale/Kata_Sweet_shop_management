@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, Text, ForeignKey
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from ..core.database import Base
 
 
@@ -13,6 +14,9 @@ class User(Base):
     is_admin = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    # Relationship
+    orders = relationship("Order", back_populates="user")
 
 
 class Sweet(Base):
@@ -27,3 +31,38 @@ class Sweet(Base):
     image = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+
+class Order(Base):
+    __tablename__ = "orders"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    total_amount = Column(Float, nullable=False)
+    status = Column(String, nullable=False, default="pending")  # pending, confirmed, shipped, delivered, cancelled
+    delivery_address = Column(Text, nullable=True)
+    phone_number = Column(String, nullable=True)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    # Relationship
+    user = relationship("User", back_populates="orders")
+    order_items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
+
+
+class OrderItem(Base):
+    __tablename__ = "order_items"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
+    sweet_id = Column(Integer, ForeignKey("sweets.id"), nullable=False)
+    sweet_name = Column(String, nullable=False)
+    selected_quantity = Column(String, nullable=False)  # 250g, 500g, 1kg
+    quantity = Column(Integer, nullable=False)
+    price = Column(Float, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    
+    # Relationships
+    order = relationship("Order", back_populates="order_items")
+    sweet = relationship("Sweet")
