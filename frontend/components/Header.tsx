@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, ShoppingCart, User, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import logo from "../../images/logo for sweet shop.webp";
+import logoImage from "@/images/Emblem Style Logo for Kata Sweet Shop.png";
 
 interface HeaderProps {
   isAuthenticated?: boolean;
@@ -27,13 +27,17 @@ export function Header({
   const navigate = useNavigate();
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-6 py-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <img src={logo} alt="Sweet Shop Logo" className="h-8 w-8 rounded" />
-            <h1 className="text-xl font-bold bg-gradient-candy bg-clip-text text-transparent">
-              Mithai Junction
+            <img 
+              src={logoImage} 
+              alt="Kata Sweet Shop Emblem Logo" 
+              className="h-12 w-12 object-contain"
+            />
+            <h1 className="text-3xl font-bold bg-gradient-candy bg-clip-text text-transparent">
+              Kata Sweet Shop
             </h1>
             {isAdmin && (
               <Badge variant="secondary" className="ml-2">Admin</Badge>
@@ -41,22 +45,27 @@ export function Header({
           </div>
 
           {/* Search */}
-          <div className="flex-1 max-w-md mx-6">
+          <div className="flex-1 max-w-lg mx-8">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
               <Input
-                placeholder="Search for mithai..."
+                placeholder="Search for sweets..."
                 value={searchQuery}
                 onChange={(e) => onSearch(e.target.value)}
-                className="pl-10 bg-muted/50"
+                className="pl-12 pr-4 py-3 bg-muted/50 border-2 focus:border-primary transition-colors"
               />
             </div>
           </div>
 
           {/* Actions */}
           <div className="flex items-center space-x-3">
-            <Button variant="ghost" size="icon">
-              <Heart className="h-4 w-4" />
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={() => navigate('/favorites')}
+              className="hover:text-red-500 transition-colors"
+            >
+              <Heart className="h-5 w-5" />
             </Button>
             
             <Button 
