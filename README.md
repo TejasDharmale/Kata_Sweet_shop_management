@@ -66,6 +66,7 @@ Update API base URL if needed in `frontend/lib/api.ts`.
 - Role-based access for admin operations
 - CRUD for sweets with search, purchase, restock
 - Polished UI with product cards, images, and responsive layout
+- Live customer support chat integration via Tawk.to
 
 ## MVC-style Backend Overview
 - Models: `backend/app/models/models.py`
@@ -84,6 +85,5 @@ Tests use a SQLite test database and override dependencies for isolation.
 ## Notes
 - CORS is enabled for Vite dev URLs: `http://localhost:5173`.
 - Images and branding are under `frontend/images/`. Header displays the provided logo.
-
-## License
-For assignment/evaluation purposes.
+- **Live Chat Support**: Integrated Tawk.to chatbot for customer support and inquiries.
+- **Assignment Purpose**: This project is developed for educational and evaluation purposes.
