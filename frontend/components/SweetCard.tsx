@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Heart, ShoppingCart, Edit, Trash2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
@@ -31,6 +32,7 @@ export function SweetCard({
 }: SweetCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+  const [selectedQuantity, setSelectedQuantity] = useState('500g');
   const { isAuthenticated } = useAuth();
   const { addItem } = useCart();
   const navigate = useNavigate();
@@ -51,13 +53,13 @@ export function SweetCard({
       onPurchase(sweet.id);
     } else {
       setIsAdding(true);
-      addItem(sweet.id, sweet.name, sweet.price, sweet.image);
+      addItem(sweet.id, sweet.name, sweet.price, sweet.image, selectedQuantity, 1);
       
       setTimeout(() => {
         setIsAdding(false);
         toast({
           title: "Added to cart!",
-          description: `${sweet.name} has been added to your cart.`,
+          description: `${sweet.name} (${selectedQuantity}) has been added to your cart.`,
         });
         navigate('/cart');
       }, 500);
@@ -78,16 +80,16 @@ export function SweetCard({
 
   return (
     <Card 
-      className={`group transition-all duration-300 hover:shadow-candy ${isHovered ? 'scale-105' : ''} ${isOutOfStock ? 'opacity-75' : ''}`}
+      className={`group transition-all duration-300 hover:shadow-candy ${isHovered ? 'scale-105' : ''} ${isOutOfStock ? 'opacity-75' : ''} h-full flex flex-col`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <CardContent className="p-4">
+      <CardContent className="p-4 flex-1 flex flex-col">
         <div className="aspect-square rounded-lg bg-gradient-soft mb-4 overflow-hidden">
           <img src={sweet.image} alt={sweet.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
         </div>
         
-        <div className="space-y-2">
+        <div className="space-y-2 flex-1 flex flex-col">
           <div className="flex items-start justify-between">
             <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
               {sweet.name}
@@ -120,12 +122,28 @@ export function SweetCard({
               {isOutOfStock ? 'Out of Stock' : `${sweet.quantity} in stock`}
             </span>
           </div>
+          
+          {!isAdmin && (
+            <div className="space-y-2 mt-auto">
+              <label className="text-sm font-medium">Select Quantity:</label>
+              <Select value={selectedQuantity} onValueChange={setSelectedQuantity}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select quantity" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="250g">250g</SelectItem>
+                  <SelectItem value="500g">500g</SelectItem>
+                  <SelectItem value="1kg">1kg</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
         </div>
       </CardContent>
       
-      <CardFooter className="p-4 pt-0 space-x-2">
+      <CardFooter className="p-4 pt-0">
         {isAdmin ? (
-          <>
+          <div className="flex space-x-2 w-full">
             <Button 
               variant="outline" 
               size="sm" 
@@ -142,7 +160,7 @@ export function SweetCard({
             >
               <Trash2 className="h-4 w-4" />
             </Button>
-          </>
+          </div>
         ) : (
           <Button 
             variant={isOutOfStock ? "outline" : "candy"} 

@@ -28,10 +28,10 @@ export function FilterBar({
 
   const priceRanges = [
     { value: 'all', label: 'All Prices' },
-    { value: '0-5', label: '$0 - $5' },
-    { value: '5-10', label: '$5 - $10' },
-    { value: '10-20', label: '$10 - $20' },
-    { value: '20+', label: '$20+' },
+    { value: '0-200', label: '₹0 - ₹200' },
+    { value: '200-300', label: '₹200 - ₹300' },
+    { value: '300-400', label: '₹300 - ₹400' },
+    { value: '400+', label: '₹400+' },
   ];
 
   const sortOptions = [
