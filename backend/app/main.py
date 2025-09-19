@@ -4,6 +4,7 @@ from .core.database import engine
 from .core.database import Base
 from .controllers import auth as auth_controller
 from .controllers import sweets as sweets_controller
+from .controllers import orders as orders_controller
 from .services.utils import create_admin_user, seed_initial_sweets
 from .core.database import get_db
 
@@ -25,6 +26,7 @@ app.add_middleware(
 
 app.include_router(auth_controller.router)
 app.include_router(sweets_controller.router)
+app.include_router(orders_controller.router)
 
 
 @app.on_event("startup")
