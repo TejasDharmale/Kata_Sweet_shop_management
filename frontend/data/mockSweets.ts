@@ -10,23 +10,23 @@ export interface Sweet {
   updated_at: string;
 }
 
-import chocolateBarfiImg from "../../images/chocolate-burfi-recipe.jpg";
-import gulabJamunImg from "../../images/gulab-jamun.webp";
-import jalebiImg from "../../images/jelebi.jpeg";
-import kajuKatliImg from "../../images/Kaju_katli_sweet.jpg";
-import rasmalaiImg from "../../images/rasmalai-recipe-1.jpg";
-import sandeshImg from "../../images/Sandesh.avif";
-import rasgullaImg from "../../images/Rasgulla.jpg";
+import chocolateBarfiImg from "../images/chocolate-burfi-recipe.jpg";
+import gulabJamunImg from "../images/gulab-jamun.webp";
+import jalebiImg from "../images/jelebi.jpeg";
+import kajuKatliImg from "../images/Kaju_katli_sweet.jpg";
+import rasmalaiImg from "../images/rasmalai-recipe-1.jpg";
+import sandeshImg from "../images/Sandesh.avif";
+import rasgullaImg from "../images/Rasgulla.jpg";
 
 // No dedicated Laddu image in repo snapshot; reusing jalebi as placeholder
-import ladduImg from "../../images/jelebi.jpeg";
+import ladduImg from "../images/jelebi.jpeg";
 
 export const mockSweets: Sweet[] = [
   {
     id: "1",
     name: "Chocolate Barfi",
     category: "modern",
-    price: 18.99,
+    price: 349,
     quantity: 20,
     description: "Contemporary twist on traditional barfi with rich chocolate",
     image: chocolateBarfiImg,
@@ -37,7 +37,7 @@ export const mockSweets: Sweet[] = [
     id: "2",
     name: "Gulab Jamun",
     category: "traditional",
-    price: 12.99,
+    price: 250,
     quantity: 25,
     description: "Soft, spongy dumplings soaked in fragrant rose-flavored syrup",
     image: gulabJamunImg,
@@ -48,7 +48,7 @@ export const mockSweets: Sweet[] = [
     id: "3",
     name: "Jalebi",
     category: "traditional",
-    price: 8.99,
+    price: 180,
     quantity: 40,
     description: "Crispy, spiral-shaped sweets soaked in saffron syrup",
     image: jalebiImg,
@@ -59,7 +59,7 @@ export const mockSweets: Sweet[] = [
     id: "4",
     name: "Kaju Katli",
     category: "premium",
-    price: 24.99,
+    price: 450,
     quantity: 15,
     description: "Diamond-shaped cashew fudge with silver leaf",
     image: kajuKatliImg,
@@ -70,7 +70,7 @@ export const mockSweets: Sweet[] = [
     id: "5",
     name: "Laddu",
     category: "traditional",
-    price: 14.99,
+    price: 280,
     quantity: 35,
     description: "Round, golden sweets made with gram flour and ghee",
     image: ladduImg,
@@ -81,7 +81,7 @@ export const mockSweets: Sweet[] = [
     id: "6",
     name: "Rasmalai",
     category: "premium",
-    price: 16.99,
+    price: 320,
     quantity: 22,
     description: "Creamy cottage cheese patties in cardamom-scented milk",
     image: rasmalaiImg,
@@ -92,7 +92,7 @@ export const mockSweets: Sweet[] = [
     id: "7",
     name: "Sandesh",
     category: "traditional",
-    price: 13.99,
+    price: 220,
     quantity: 28,
     description: "Bengali cottage cheese sweet with delicate flavor",
     image: sandeshImg,
@@ -103,7 +103,7 @@ export const mockSweets: Sweet[] = [
     id: "8",
     name: "Rasgulla",
     category: "traditional",
-    price: 10.99,
+    price: 190,
     quantity: 30,
     description: "Light, airy cottage cheese balls in sweet syrup",
     image: rasgullaImg,
