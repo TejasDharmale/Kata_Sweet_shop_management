@@ -31,6 +31,35 @@ interface User {
   created_at: string;
 }
 
+interface OrderItem {
+  sweet_id: number;
+  sweet_name: string;
+  selected_quantity: string;
+  quantity: number;
+  price: number;
+}
+
+interface Order {
+  id: number;
+  user_id: number;
+  total_amount: number;
+  status: string;
+  delivery_address?: string;
+  phone_number?: string;
+  notes?: string;
+  created_at: string;
+  updated_at?: string;
+  order_items: OrderItem[];
+}
+
+interface OrderCreate {
+  total_amount: number;
+  delivery_address?: string;
+  phone_number?: string;
+  notes?: string;
+  order_items: OrderItem[];
+}
+
 class ApiClient {
   private token: string | null = null;
 
@@ -169,10 +198,60 @@ class ApiClient {
     return this.handleResponse(response);
   }
 
+  async createOrder(orderData: OrderCreate): Promise<Order> {
+    console.log('Creating order with data:', orderData);
+    console.log('API URL:', `${API_BASE_URL}/api/orders/`);
+    console.log('Headers:', this.getHeaders());
+    
+    const response = await fetch(`${API_BASE_URL}/api/orders/`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(orderData),
+    });
+    
+    console.log('Order response status:', response.status);
+    console.log('Order response headers:', response.headers);
+    
+    return this.handleResponse(response);
+  }
+
+  async getUserOrders(): Promise<Order[]> {
+    const response = await fetch(`${API_BASE_URL}/api/orders/`, {
+      headers: this.getHeaders(),
+    });
+    
+    return this.handleResponse(response);
+  }
+
+  async getAllOrders(): Promise<Order[]> {
+    const response = await fetch(`${API_BASE_URL}/api/orders/admin`, {
+      headers: this.getHeaders(),
+    });
+    
+    return this.handleResponse(response);
+  }
+
+  async getOrder(orderId: number): Promise<Order> {
+    const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}`, {
+      headers: this.getHeaders(),
+    });
+    
+    return this.handleResponse(response);
+  }
+
+  async cancelOrder(orderId: number): Promise<{ message: string }> {
+    const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}`, {
+      method: 'DELETE',
+      headers: this.getHeaders(),
+    });
+    
+    return this.handleResponse(response);
+  }
+
   isAuthenticated(): boolean {
     return !!this.token;
   }
 }
 
 export const apiClient = new ApiClient();
-export type { Sweet, User, LoginCredentials, RegisterData };
+export type { Sweet, User, LoginCredentials, RegisterData, Order, OrderCreate, OrderItem };
