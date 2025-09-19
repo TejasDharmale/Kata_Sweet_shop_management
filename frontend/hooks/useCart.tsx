@@ -6,6 +6,7 @@ export interface CartItem {
   name: string;
   price: number;
   quantity: number;
+  selectedQuantity: string; // 250g, 500g, 1kg
   image: string;
 }
 
@@ -13,7 +14,7 @@ interface CartContextType {
   items: CartItem[];
   itemCount: number;
   totalPrice: number;
-  addItem: (sweetId: string, name: string, price: number, image: string, quantity?: number) => void;
+  addItem: (sweetId: string, name: string, price: number, image: string, selectedQuantity?: string, quantity?: number) => void;
   removeItem: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
@@ -37,12 +38,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  const addItem = (sweetId: string, name: string, price: number, image: string, quantity: number = 1) => {
+  const addItem = (sweetId: string, name: string, price: number, image: string, selectedQuantity: string = '500g', quantity: number = 1) => {
     setItems(prev => {
-      const existingItem = prev.find(item => item.sweetId === sweetId);
+      const existingItem = prev.find(item => item.sweetId === sweetId && item.selectedQuantity === selectedQuantity);
       if (existingItem) {
         return prev.map(item =>
-          item.sweetId === sweetId
+          item.sweetId === sweetId && item.selectedQuantity === selectedQuantity
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
@@ -53,6 +54,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           name,
           price,
           quantity,
+          selectedQuantity,
           image
         }];
       }
