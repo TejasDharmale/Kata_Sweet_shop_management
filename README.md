@@ -154,3 +154,10 @@ Tests use a SQLite test database and override dependencies for isolation.
 
 ## Conclusion
 The Kata Sweet Shop Management system showcases how modern web technologies, combined with FastApi and Vite
+
+## Connection Details
+- Host: localhost
+- Port: 5432
+- Database: incubytes
+- Username: appuser
+- Password: StrongPass_123!
