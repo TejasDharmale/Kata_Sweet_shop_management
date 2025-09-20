@@ -8,24 +8,27 @@ A modular Sweet Shop application with a FastAPI + PostgreSQL backend and a Vite 
 - Frontend: Vite, React, TypeScript, Tailwind CSS, shadcn/ui
 - Testing: Pytest, HTTPX (FastAPI TestClient)
 
+![Sweet Shop Overview](https://github.com/user-attachments/assets/b55a205c-67a4-44d7-a0e2-2e3dcbee8238)
+
 ## Repository Structure
-```
 backend/
-  app/
-    core/         # config, database
-    models/       # SQLAlchemy models
-    schemas/      # Pydantic schemas
-    services/     # auth, deps, utils
-    controllers/  # FastAPI routers (auth, sweets)
-    main.py       # FastAPI app entry
-  tests/
-    test_sweets.py
-  run_backend.py  # uvicorn runner
-  requirements.txt
+app/
+core/ # config, database
+models/ # SQLAlchemy models
+schemas/ # Pydantic schemas
+services/ # auth, deps, utils
+controllers/ # FastAPI routers (auth, sweets)
+main.py # FastAPI app entry
+tests/
+test_sweets.py
+run_backend.py # uvicorn runner
+requirements.txt
 
 frontend/
-  ... Vite/React app with components, pages, images, and config
-```
+... Vite/React app with components, pages, images, and config
+
+markdown
+Copy code
 
 ## Prerequisites
 - Node.js 18+ and npm
@@ -34,31 +37,36 @@ frontend/
 
 ## Environment
 Set your database URL. Default is already configured for local Postgres.
-```
 DATABASE_URL=postgresql://appuser:StrongPass_123!@127.0.0.1:5432/incubytes
-```
+
+markdown
+Copy code
 If you want to override, create a `.env` file in `backend/` and set `DATABASE_URL` there.
 
 ## Backend: Setup & Run
-```
 cd backend
 python -m venv .venv
-. .venv/Scripts/activate   # Windows PowerShell
+. .venv/Scripts/activate # Windows PowerShell
 pip install -r requirements.txt
-python run_backend.py      # runs on http://localhost:8000
-```
+python run_backend.py # runs on http://localhost:8000
+
+markdown
+Copy code
 - Health: GET http://localhost:8000/health
 - Auth routes: `/api/auth/*`
 - Sweets routes: `/api/sweets/*`
 
 On first startup, an admin user and sample sweets are seeded.
 
+![Backend Swagger](https://github.com/user-attachments/assets/5ac67fe1-43b8-430f-8204-c3dc55f57aae)
+
 ## Frontend: Setup & Run
-```
 cd frontend
 npm install
-npm run dev                 # http://localhost:5173
-```
+npm run dev # http://localhost:5173
+
+markdown
+Copy code
 Update API base URL if needed in `frontend/lib/api.ts`.
 
 ## Key Features
@@ -79,66 +87,73 @@ Update API base URL if needed in `frontend/lib/api.ts`.
 - Core: `backend/app/core/*` for configuration and DB session
 
 ## Tests
-```
 cd backend
 pytest -q
-```
+
+markdown
+Copy code
 Tests use a SQLite test database and override dependencies for isolation.
 
-## My AI Usage
+---
 
-### AI Tools Used
-- **Claude (Anthropic)**: Primary AI assistant for development guidance
-- **GitHub Copilot**: Code completion and suggestions
-- **ChatGPT**: Alternative AI assistance for specific coding challenges
+### **1. Primary Development Partner**
 
-### How I Used AI Tools
+- **Frontend Development**: Used Claude to build the React + TypeScript frontend with modern UI components, responsive design, and state management  
+- **API Integration**: Developed RESTful API endpoints with proper error handling, validation, and documentation  
+- **Code Optimization**: Refactored code for better performance, maintainability, and following React best practices  
+- **Troubleshooting**: Resolved complex issues like CORS configuration, image optimization, and build processes  
 
-#### 1. **Claude (Anthropic) - Primary Development Partner**
-- **Project Architecture**: Used Claude to design the overall MVC-style backend structure with FastAPI, including proper separation of concerns between models, schemas, controllers, and services
-- **Database Design**: Collaborated with Claude to design the PostgreSQL schema for users, sweets, and orders with proper relationships and constraints
-- **Authentication System**: Implemented JWT-based authentication with role-based access control using Claude's guidance on security best practices
-- **Frontend Development**: Used Claude to build the React + TypeScript frontend with modern UI components, responsive design, and state management
-- **API Integration**: Developed RESTful API endpoints with proper error handling, validation, and documentation
-- **Code Optimization**: Refactored code for better performance, maintainability, and following React best practices
-- **Troubleshooting**: Resolved complex issues like CORS configuration, image optimization, and build processes
+![Frontend Dashboard](https://github.com/user-attachments/assets/829e9703-a430-4dc1-811d-8c56940079e4)
 
-#### 2. **GitHub Copilot - Code Acceleration**
+### **2. GitHub Copilot - Code Acceleration**
+- **TypeScript Types**: Leveraged Copilot's suggestions for proper TypeScript typing and interface definitions  
+- **SQL Queries**: Generated complex database queries and migrations with Copilot's assistance  
+- **CSS Styling**: Used Copilot for Tailwind CSS class suggestions and responsive design patterns  
 
-- **TypeScript Types**: Leveraged Copilot's suggestions for proper TypeScript typing and interface definitions
-- **SQL Queries**: Generated complex database queries and migrations with Copilot's assistance
-- **CSS Styling**: Used Copilot for Tailwind CSS class suggestions and responsive design patterns
+---
 
-#### 3. **ChatGPT - Alternative Perspectives**
-- **Problem Solving**: Consulted ChatGPT for alternative approaches to complex problems when initial solutions didn't work
-- **Code Review**: Used ChatGPT to review and suggest improvements for specific code sections
-- **Documentation**: Generated comprehensive documentation and README content with ChatGPT's assistance
+## Reflection on AI Impact
 
-### Reflection on AI Impact
+### **Positive Impacts**
+- Accelerated development (60–70% faster)  
+- Real-time learning opportunities  
+- Maintained consistent coding standards  
+- AI provided alternative problem-solving approaches  
+- Helped in creating better documentation  
 
-#### **Positive Impacts:**
-- **Accelerated Development**: AI tools reduced development time by approximately 60-70%, allowing me to focus on higher-level architecture and user experience
-- **Learning Enhancement**: AI provided real-time learning opportunities, explaining complex concepts and best practices as we built the project
-- **Code Quality**: AI suggestions helped maintain consistent coding standards and catch potential bugs early
-- **Creative Problem Solving**: AI offered multiple approaches to challenges, expanding my problem-solving toolkit
-- **Documentation**: AI assistance made comprehensive documentation more manageable and thorough
+![AI Impact](https://github.com/user-attachments/assets/90ae81eb-cbdc-4b16-b0b3-4be4d383d01b)
 
-#### **Challenges and Learning:**
-- **Context Understanding**: Sometimes AI suggestions didn't perfectly match the project context, requiring careful review and adaptation
-- **Debugging Complexity**: When AI-generated code had issues, debugging became more complex as I needed to understand both the problem and the AI's reasoning
+### **Challenges and Learning**
+- AI sometimes lacked project context → required human review  
+- Debugging AI-generated code was harder  
 
-#### **Responsible AI Usage:**
-- **Code Review**: Always reviewed and understood AI-generated code before implementation
-- **Learning First**: Used AI as a learning tool rather than a replacement for understanding core concepts
-- **Customization**: Adapted AI suggestions to fit the specific project requirements and coding standards
-- **Testing**: Thoroughly tested all AI-assisted code to ensure functionality and security
+![Debugging](https://github.com/user-attachments/assets/a63317ce-197a-4853-ace3-045810729481)
 
-#### **Workflow Integration:**
-- **Iterative Development**: Used AI in an iterative manner - generate, review, test, refine
-- **Knowledge Building**: Combined AI assistance with traditional learning resources to build comprehensive understanding
-- **Quality Assurance**: Maintained high code quality standards by treating AI as a collaborative partner rather than a replacement for critical thinking
+### **Responsible AI Usage**
+- Always reviewed AI-generated code  
+- Treated AI as a **learning tool**  
+- Customized suggestions to match standards  
+- Thoroughly tested everything  
 
-### Conclusion
-AI tools significantly enhanced my development workflow by accelerating code generation, providing learning opportunities, and offering alternative problem-solving approaches. However, the key to effective AI usage was maintaining a balance between leveraging AI capabilities and ensuring deep understanding of the underlying concepts. This project demonstrates how AI can be a powerful development partner when used responsibly and thoughtfully.
+### **Workflow Integration**
+- Iterative cycle: generate → review → test → refine  
+- Combined AI with traditional resources  
+- Treated AI as a collaborator  
 
+![Workflow](https://github.com/user-attachments/assets/ea785650-41ab-4297-8f28-fe8a434f5c8d)
 
+---
+
+### **Login: Use "Continue with Google" for instant access**
+- **Order**: Browse sweets → Add to cart → Checkout → Download PDF receipt  
+- **Feedback**: Go to "Community Feedback" → Write review → Submit  
+- **Navigation**: Use header (Home/Cart/Orders) and footer links (About/Contact/Policies)  
+- **Emails**: All orders and feedback automatically send confirmations  
+
+![UI Orders](https://github.com/user-attachments/assets/85b5fbd0-f7c7-4e57-84dd-ed31e3bafd14)  
+![UI Cart](https://github.com/user-attachments/assets/9493b0f4-73b3-45b0-9b46-52796d381e99)
+
+---
+
+## Conclusion
+The Kata Sweet Shop Management system showcases how modern web technologies, combined with thoughtful AI integr
