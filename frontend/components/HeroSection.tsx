@@ -11,15 +11,15 @@ interface HeroSectionProps {
 
 export function HeroSection({ onGetStarted, onExploreSweets }: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden bg-gradient-soft min-h-[70vh] flex items-center">
-      <div className="container mx-auto px-6 py-20">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8 text-center lg:text-left">
-            <Badge variant="secondary" className="bg-primary-glow/20 text-black border-primary/20">
-               Special Mithai Offers
+    <section className="relative overflow-hidden bg-gradient-soft min-h-[60vh] sm:min-h-[70vh] flex items-center">
+      <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-20">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-16 items-center">
+          <div className="space-y-6 sm:space-y-8 text-center lg:text-left">
+            <Badge variant="secondary" className="bg-primary-glow/20 text-black border-primary/20 text-sm sm:text-lg font-bold font-serif">
+               Made in India
             </Badge>
             
-            <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight">
               Welcome to Our
               <span className="block bg-gradient-candy bg-clip-text text-transparent">
                 <TypewriterText 
@@ -31,17 +31,17 @@ export function HeroSection({ onGetStarted, onExploreSweets }: HeroSectionProps)
               </span>
             </h1>
             
-            <p className="text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0">
               Discover the finest collection of traditional Indian sweets and authentic mithai. 
               From classic regional favorites to artisanal creations, we bring India's sweetest traditions to you.
             </p>
             
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
                     <Button
                       variant="candy"
                       size="lg"
                       onClick={onGetStarted}
-                      className="text-lg px-8"
+                      className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6"
                     >
                       Start Shopping
                     </Button>
@@ -49,7 +49,7 @@ export function HeroSection({ onGetStarted, onExploreSweets }: HeroSectionProps)
                       variant="outline"
                       size="lg"
                       onClick={onExploreSweets}
-                      className="text-lg px-8"
+                      className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6"
                     >
                       Explore Sweets
                     </Button>

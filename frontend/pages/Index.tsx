@@ -10,12 +10,13 @@ import { AuthModal } from "@/components/AuthModal";
 import { AdminDashboard } from "@/components/AdminDashboard";
 import { Testimonials } from "@/components/Testimonials";
 import { FeedbackCommunity } from "@/components/FeedbackCommunity";
+import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
-  const { user, isAuthenticated, isAdmin, login, register, logout } = useAuth();
+  const { user, isAuthenticated, isAdmin, login, register, googleAuth, logout } = useAuth();
   const { itemCount, addItem } = useCart();
   const [sweets, setSweets] = useState<Sweet[]>([]);
   const [loading, setLoading] = useState(false);
@@ -39,7 +40,7 @@ const Index = () => {
   useEffect(() => {
     const savedFavorites = localStorage.getItem('favorites');
     if (savedFavorites) {
-      const favoriteIds = new Set(JSON.parse(savedFavorites));
+      const favoriteIds = new Set<string>(JSON.parse(savedFavorites));
       setFavorites(favoriteIds);
     }
   }, []);
@@ -99,9 +100,9 @@ const Index = () => {
     }
   };
 
-  const handleRegister = async (name: string, email: string, password: string) => {
+  const handleRegister = async (name: string, email: string, password: string, phone?: string) => {
     try {
-      await register(name, email, password);
+      await register(name, email, password, phone);
       setIsAuthModalOpen(false);
       toast({
         title: "Account created!",
@@ -111,6 +112,23 @@ const Index = () => {
       toast({
         title: "Registration Failed",
         description: error instanceof Error ? error.message : "Registration failed",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleGoogleAuth = async (googleUser: any) => {
+    try {
+      await googleAuth(googleUser);
+      setIsAuthModalOpen(false);
+      toast({
+        title: "Welcome!",
+        description: "Successfully logged in with Google. Enjoy shopping!",
+      });
+    } catch (error) {
+      toast({
+        title: "Google Login Failed",
+        description: error instanceof Error ? error.message : "Google authentication failed",
         variant: "destructive"
       });
     }
@@ -274,12 +292,13 @@ const Index = () => {
           onClose={() => setIsAuthModalOpen(false)}
           onLogin={handleLogin}
           onRegister={handleRegister}
+          onGoogleAuth={handleGoogleAuth}
           onLogout={logout}
           isAuthenticated={isAuthenticated}
           user={user ? {
             name: user.username,
             email: user.email,
-            phone: user.phone
+            phone: user.phone || ''
           } : undefined}
         />
       </div>
@@ -361,18 +380,21 @@ const Index = () => {
 
       <Testimonials />
       <FeedbackCommunity />
+      
+      <Footer />
 
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         onLogin={handleLogin}
         onRegister={handleRegister}
+        onGoogleAuth={handleGoogleAuth}
         onLogout={logout}
         isAuthenticated={isAuthenticated}
         user={user ? {
           name: user.username,
           email: user.email,
-          phone: user.phone
+          phone: user.phone || ''
         } : undefined}
       />
     </div>

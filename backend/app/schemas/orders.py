@@ -15,6 +15,8 @@ class OrderCreate(BaseModel):
     total_amount: float
     delivery_address: Optional[str] = None
     phone_number: Optional[str] = None
+    email: Optional[str] = None
+    customer_name: Optional[str] = None
     notes: Optional[str] = None
     order_items: List[OrderItemCreate]
 
@@ -39,6 +41,8 @@ class OrderResponse(BaseModel):
     status: str
     delivery_address: Optional[str]
     phone_number: Optional[str]
+    email: Optional[str]
+    customer_name: Optional[str]
     notes: Optional[str]
     created_at: datetime
     updated_at: Optional[datetime]

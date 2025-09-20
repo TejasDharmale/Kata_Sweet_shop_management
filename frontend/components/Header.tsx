@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, ShoppingCart, User, Heart } from "lucide-react";
+import { Search, ShoppingCart, User, Heart, ShoppingBag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import logoImage from "@/images/Emblem Style Logo for Kata Sweet Shop.png";
 
@@ -27,25 +27,28 @@ export function Header({
   const navigate = useNavigate();
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
-      <div className="container mx-auto px-6 py-6">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-6">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <img 
               src={logoImage} 
               alt="Kata Sweet Shop Emblem Logo" 
-              className="h-12 w-12 object-contain"
+              className="h-8 w-8 sm:h-12 sm:w-12 object-contain"
             />
-            <h1 className="text-3xl font-bold bg-gradient-candy bg-clip-text text-transparent">
+            <h1 
+              className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-candy bg-clip-text text-transparent cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => navigate('/')}
+            >
               Kata Sweet Shop
             </h1>
             {isAdmin && (
-              <Badge variant="secondary" className="ml-2">Admin</Badge>
+              <Badge variant="secondary" className="ml-1 sm:ml-2 text-xs sm:text-sm">Admin</Badge>
             )}
           </div>
 
-          {/* Search */}
-          <div className="flex-1 max-w-lg mx-8">
+          {/* Search - Hidden on mobile, shown on larger screens */}
+          <div className="hidden sm:block flex-1 max-w-lg mx-8">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
               <Input
@@ -57,43 +60,81 @@ export function Header({
             </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center space-x-3">
-            <Button 
-              variant="ghost" 
+          {/* Mobile Search Button */}
+          <div className="sm:hidden">
+            <Button
+              variant="ghost"
               size="icon"
-              onClick={() => navigate('/favorites')}
-              className="hover:text-red-500 transition-colors"
+              onClick={() => {
+                const query = prompt('Search sweets:');
+                if (query) onSearch(query);
+              }}
+              className="h-10 w-10"
             >
-              <Heart className="h-5 w-5" />
+              <Search className="h-5 w-5" />
             </Button>
-            
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={() => navigate('/cart')}
-              className={`relative ${cartCount > 0 ? 'text-accent' : ''}`}
-            >
-              <ShoppingCart className="h-4 w-4" />
-              {cartCount > 0 && (
-                <Badge 
-                  variant="destructive" 
-                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
-                >
-                  {cartCount}
-                </Badge>
-              )}
-            </Button>
+          </div>
 
-            <Button 
-              variant={isAuthenticated ? "ghost" : "candy"} 
-              size="sm"
-              onClick={onAuthClick}
-              className="flex items-center space-x-2"
-            >
-              <User className="h-4 w-4" />
-              <span>{isAuthenticated ? "Profile" : "Login"}</span>
-            </Button>
+          {/* Actions */}
+          <div className="flex items-center space-x-3 sm:space-x-4">
+            <div className="flex flex-col items-center">
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={() => navigate('/favorites')}
+                className="hover:text-red-500 transition-colors h-10 w-10 sm:h-12 sm:w-12"
+              >
+                <Heart className="h-4 w-4 sm:h-5 sm:w-5" />
+              </Button>
+              <span className="text-xs text-muted-foreground mt-1">Favorites</span>
+            </div>
+            
+            <div className="flex flex-col items-center">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => navigate('/cart')}
+                className={`relative h-10 w-10 sm:h-12 sm:w-12 ${cartCount > 0 ? 'text-accent' : ''}`}
+              >
+                <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
+                {cartCount > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 h-4 w-4 sm:h-5 sm:w-5 rounded-full p-0 flex items-center justify-center text-xs"
+                  >
+                    {cartCount}
+                  </Badge>
+                )}
+              </Button>
+              <span className="text-xs text-muted-foreground mt-1">Cart</span>
+            </div>
+
+            {isAuthenticated && (
+              <div className="flex flex-col items-center">
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => navigate('/order-history')}
+                  className="hover:text-primary transition-colors h-10 w-10 sm:h-12 sm:w-12"
+                >
+                  <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5" />
+                </Button>
+                <span className="text-xs text-muted-foreground mt-1">Orders</span>
+              </div>
+            )}
+
+            <div className="flex flex-col items-center">
+              <Button 
+                variant={isAuthenticated ? "ghost" : "candy"} 
+                size="sm"
+                onClick={onAuthClick}
+                className="flex items-center space-x-1 sm:space-x-2 h-10 px-2 sm:px-4"
+              >
+                <User className="h-4 w-4" />
+                <span className="text-sm sm:text-base hidden xs:inline">{isAuthenticated ? "Profile" : "Login"}</span>
+              </Button>
+              <span className="text-xs text-muted-foreground mt-1">{isAuthenticated ? "Profile" : "Login"}</span>
+            </div>
           </div>
         </div>
       </div>

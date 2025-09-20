@@ -84,23 +84,23 @@ export function SweetCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <CardContent className="p-4 flex-1 flex flex-col">
-        <div className="aspect-square rounded-lg bg-gradient-soft mb-4 overflow-hidden">
-          <img src={sweet.image} alt={sweet.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+      <CardContent className="p-3 sm:p-4 flex-1 flex flex-col">
+        <div className="aspect-square rounded-lg bg-gradient-soft mb-3 sm:mb-4 overflow-hidden">
+          <img src={sweet.image} alt={sweet.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
         </div>
         
         <div className="space-y-2 flex-1 flex flex-col">
           <div className="flex items-start justify-between">
-            <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
+            <h3 className="font-semibold text-base sm:text-lg group-hover:text-primary transition-colors leading-tight">
               {sweet.name}
             </h3>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => onToggleFavorite?.(sweet.id)}
-              className="h-8 w-8 hover:text-red-500"
+              className="h-7 w-7 sm:h-8 sm:w-8 hover:text-red-500 flex-shrink-0"
             >
-              <Heart className={`h-4 w-4 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
+              <Heart className={`h-3 w-3 sm:h-4 sm:w-4 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
             </Button>
           </div>
           
@@ -114,20 +114,20 @@ export function SweetCard({
             </p>
           )}
           
-          <div className="flex items-center justify-between">
-            <span className="text-2xl font-bold text-primary">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
+            <span className="text-xl sm:text-2xl font-bold text-primary">
               ₹{sweet.price}
             </span>
-            <span className={`text-sm ${isOutOfStock ? 'text-destructive' : 'text-muted-foreground'}`}>
+            <span className={`text-xs sm:text-sm ${isOutOfStock ? 'text-destructive' : 'text-muted-foreground'}`}>
               {isOutOfStock ? 'Out of Stock' : `${sweet.quantity} in stock`}
             </span>
           </div>
           
           {!isAdmin && (
             <div className="space-y-2 mt-auto">
-              <label className="text-sm font-medium">Select Quantity:</label>
+              <label className="text-xs sm:text-sm font-medium">Select Quantity:</label>
               <Select value={selectedQuantity} onValueChange={setSelectedQuantity}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full h-9 sm:h-10">
                   <SelectValue placeholder="Select quantity" />
                 </SelectTrigger>
                 <SelectContent>
@@ -141,24 +141,25 @@ export function SweetCard({
         </div>
       </CardContent>
       
-      <CardFooter className="p-4 pt-0">
+      <CardFooter className="p-3 sm:p-4 pt-0">
         {isAdmin ? (
           <div className="flex space-x-2 w-full">
             <Button 
               variant="outline" 
               size="sm" 
               onClick={() => onEdit?.(sweet)}
-              className="flex-1"
+              className="flex-1 h-9 sm:h-10"
             >
-              <Edit className="h-4 w-4 mr-2" />
-              Edit
+              <Edit className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              <span className="text-xs sm:text-sm">Edit</span>
             </Button>
             <Button 
               variant="destructive" 
               size="sm" 
               onClick={() => onDelete?.(sweet.id)}
+              className="h-9 w-9 sm:h-10 sm:w-10 p-0"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
             </Button>
           </div>
         ) : (
@@ -167,10 +168,12 @@ export function SweetCard({
             size="sm" 
             disabled={isOutOfStock || isAdding}
             onClick={handleAddToCart}
-            className="w-full"
+            className="w-full h-9 sm:h-10"
           >
-            <ShoppingCart className="h-4 w-4 mr-2" />
-            {isAdding ? "Adding..." : isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+            <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+            <span className="text-xs sm:text-sm">
+              {isAdding ? "Adding..." : isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+            </span>
           </Button>
         )}
       </CardFooter>

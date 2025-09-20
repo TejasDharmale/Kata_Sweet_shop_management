@@ -27,6 +27,7 @@ interface User {
   id: number;
   email: string;
   username: string;
+  phone?: string;
   is_admin: boolean;
   created_at: string;
 }
@@ -56,6 +57,8 @@ interface OrderCreate {
   total_amount: number;
   delivery_address?: string;
   phone_number?: string;
+  email?: string;
+  customer_name?: string;
   notes?: string;
   order_items: OrderItem[];
 }

@@ -42,6 +42,8 @@ class Order(Base):
     status = Column(String, nullable=False, default="pending")  # pending, confirmed, shipped, delivered, cancelled
     delivery_address = Column(Text, nullable=True)
     phone_number = Column(String, nullable=True)
+    email = Column(String, nullable=True)
+    customer_name = Column(String, nullable=True)
     notes = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

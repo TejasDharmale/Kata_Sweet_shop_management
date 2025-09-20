@@ -6,7 +6,8 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isAdmin: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string, phone?: string) => Promise<void>;
+  googleAuth: (googleUser: any) => Promise<void>;
   logout: () => void;
   loading: boolean;
 }
@@ -48,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('access_token', 'mock-token');
   };
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (name: string, email: string, password: string, phone?: string) => {
     // Mock registration - simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000));
     
@@ -58,6 +59,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     // Auto-login after registration
     await login(email, password);
+  };
+
+  const googleAuth = async (googleUser: any) => {
+    try {
+      // Mock Google authentication - simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const mockUser: User = {
+        id: 2,
+        email: googleUser.email,
+        username: googleUser.name || googleUser.email?.split('@')[0] || 'google_user',
+        is_admin: false,
+        created_at: new Date().toISOString(),
+      };
+      
+      setUser(mockUser);
+      localStorage.setItem('user', JSON.stringify(mockUser));
+      localStorage.setItem('access_token', 'google-mock-token');
+      localStorage.setItem('google_user_data', JSON.stringify(googleUser));
+      
+      console.log('Google authentication successful:', mockUser);
+    } catch (error) {
+      console.error('Google authentication failed:', error);
+      throw error;
+    }
   };
 
   const logout = () => {
@@ -73,6 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isAdmin: user?.is_admin || false,
     login,
     register,
+    googleAuth,
     logout,
     loading,
   };

@@ -6,12 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Eye, EyeOff, User, Mail, Lock, Phone, LogOut, Settings } from "lucide-react";
+import { RealGoogleAuth } from "@/components/RealGoogleAuth";
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   onLogin: (email: string, password: string) => void;
   onRegister: (name: string, email: string, password: string, phone?: string) => void;
+  onGoogleAuth?: (googleUser: any) => void;
   onLogout?: () => void;
   isAuthenticated?: boolean;
   user?: {
@@ -21,7 +23,7 @@ interface AuthModalProps {
   };
 }
 
-export function AuthModal({ isOpen, onClose, onLogin, onRegister, onLogout, isAuthenticated = false, user }: AuthModalProps) {
+export function AuthModal({ isOpen, onClose, onLogin, onRegister, onGoogleAuth, onLogout, isAuthenticated = false, user }: AuthModalProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [registerForm, setRegisterForm] = useState({ name: '', email: '', password: '', confirmPassword: '', phone: '' });
@@ -40,9 +42,19 @@ export function AuthModal({ isOpen, onClose, onLogin, onRegister, onLogout, isAu
     onRegister(registerForm.name, registerForm.email, registerForm.password, registerForm.phone);
   };
 
+  const handleGoogleSuccess = (response: any) => {
+    if (onGoogleAuth) {
+      onGoogleAuth(response);
+    }
+  };
+
+  const handleGoogleFailure = (error: any) => {
+    console.error('Google authentication failed:', error);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="w-[95vw] max-w-md mx-4 sm:mx-auto">
         {!isAuthenticated && (
           <DialogHeader>
             <DialogTitle className="text-center text-2xl bg-gradient-candy bg-clip-text text-transparent">
@@ -157,9 +169,26 @@ export function AuthModal({ isOpen, onClose, onLogin, onRegister, onLogout, isAu
                       </div>
                     </div>
 
-                    <Button type="submit" variant="candy" className="w-full">
+                    <Button type="submit" variant="candy" className="w-full h-11 sm:h-12">
                       Login
                     </Button>
+                    
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-background px-2 text-muted-foreground">
+                          Or continue with
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <RealGoogleAuth 
+                      onSuccess={handleGoogleSuccess}
+                      onFailure={handleGoogleFailure}
+                      text="Continue with Google"
+                    />
                   </form>
                 </CardContent>
               </Card>
@@ -266,9 +295,26 @@ export function AuthModal({ isOpen, onClose, onLogin, onRegister, onLogout, isAu
                       </div>
                     </div>
 
-                    <Button type="submit" variant="sweet" className="w-full">
+                    <Button type="submit" variant="sweet" className="w-full h-11 sm:h-12">
                       Create Account
                     </Button>
+                    
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-background px-2 text-muted-foreground">
+                          Or continue with
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <RealGoogleAuth 
+                      onSuccess={handleGoogleSuccess}
+                      onFailure={handleGoogleFailure}
+                      text="Sign up with Google"
+                    />
                   </form>
                 </CardContent>
               </Card>

@@ -5,6 +5,7 @@ from ..core.database import get_db
 from ..models.models import Order, OrderItem, User, Sweet
 from ..schemas.orders import OrderCreate, OrderResponse, OrderUpdate, OrderItemResponse
 from ..services.deps import get_current_user, get_admin_user
+from ..services.email_service import EmailService
 
 router = APIRouter(prefix="/api/orders", tags=["orders"])
 
@@ -23,6 +24,8 @@ def create_order(
         total_amount=order_data.total_amount,
         delivery_address=order_data.delivery_address,
         phone_number=order_data.phone_number,
+        email=order_data.email,
+        customer_name=order_data.customer_name or current_user.name,
         notes=order_data.notes
     )
     
@@ -63,6 +66,62 @@ def create_order(
     
     db.commit()
     db.refresh(order)
+    
+    # Send order confirmation email
+    try:
+        print(f"\n🔄 Attempting to send order confirmation email...")
+        print(f"📧 User Email: {current_user.email}")
+        print(f"👤 User Name: {current_user.name}")
+        print(f"🛒 Order ID: {order.id}")
+        
+        email_service = EmailService()
+        
+        # Calculate subtotal and tax for email
+        subtotal = sum(item.price for item in order.order_items)
+        tax = round(subtotal * 0.18)
+        
+        order_data = {
+            "order_id": order.id,
+            "total_amount": order.total_amount,
+            "subtotal": subtotal,
+            "tax": tax,
+            "delivery_address": order.delivery_address,
+            "phone_number": order.phone_number,
+            "customer_name": order.customer_name,
+            "notes": order.notes,
+            "order_items": [
+                {
+                    "sweet_name": item.sweet_name,
+                    "selected_quantity": item.selected_quantity,
+                    "quantity": item.quantity,
+                    "price": item.price
+                }
+                for item in order.order_items
+            ]
+        }
+        
+        print(f" Order Data: {order_data}")
+        
+        # Use the email from the order form if provided, otherwise use user email
+        recipient_email = order.email if order.email else current_user.email
+        
+        # Use customer name from order if available, otherwise use user name
+        customer_name = order.customer_name if order.customer_name else current_user.name
+        
+        email_service.send_order_confirmation_email(
+            recipient_email, 
+            customer_name, 
+            order_data
+        )
+        
+        print(f" Email service called successfully")
+        
+    except Exception as e:
+        print(f" Failed to send order confirmation email: {str(e)}")
+        import traceback
+        print(f" Full error traceback:")
+        traceback.print_exc()
+        # Don't fail the order creation if email fails
     
     return order
 
@@ -128,12 +187,37 @@ def update_order(
             detail="Order not found"
         )
     
+    # Store old status for comparison
+    old_status = order.status
+    
     # Update order fields
     for field, value in order_update.dict(exclude_unset=True).items():
         setattr(order, field, value)
     
     db.commit()
     db.refresh(order)
+    
+    # Send status update email if status changed
+    if old_status != order.status:
+        try:
+            email_service = EmailService()
+            order_data = {
+                "order_id": order.id,
+                "total_amount": order.total_amount,
+                "delivery_address": order.delivery_address,
+                "phone_number": order.phone_number,
+                "notes": order.notes
+            }
+            user = db.query(User).filter(User.id == order.user_id).first()
+            if user:
+                email_service.send_order_status_update_email(
+                    user.email, 
+                    user.name, 
+                    order_data, 
+                    order.status
+                )
+        except Exception as e:
+            print(f"Failed to send status update email: {str(e)}")
     
     return order
 

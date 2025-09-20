@@ -12,6 +12,19 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/main.tsx"></script>
+    
+    <!-- EmailJS for Feedback Forms -->
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+       (function(){
+          emailjs.init({
+            publicKey: "Rk802kjO0jY0jcAr3",
+          });
+       })();
+    </script>
+    
     <!--Start of Tawk.to Script-->
     <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();

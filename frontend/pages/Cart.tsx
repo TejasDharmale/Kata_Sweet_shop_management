@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { Header } from '@/components/Header';
+import { Receipt } from '@/components/Receipt';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, Receipt as ReceiptIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { apiClient, OrderCreate } from '@/lib/api';
@@ -20,12 +21,15 @@ const Cart = () => {
   const navigate = useNavigate();
   
   const [deliveryAddress, setDeliveryAddress] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [customerName, setCustomerName] = useState('');
   const [notes, setNotes] = useState('');
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const [showReceipt, setShowReceipt] = useState(false);
+  const [lastOrder, setLastOrder] = useState<any>(null);
 
   const subtotal = totalPrice;
-  const tax = subtotal * 0.1; // 10% tax
+  const tax = subtotal * 0.18; // 18% GST
   const total = subtotal + tax;
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
@@ -50,10 +54,30 @@ const Cart = () => {
       return;
     }
 
-    if (!phoneNumber.trim()) {
+    if (!customerName.trim()) {
       toast({
-        title: "Phone number required",
-        description: "Please provide a phone number to place your order.",
+        title: "Customer name required",
+        description: "Please provide your name for the order.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!email.trim()) {
+      toast({
+        title: "Email required",
+        description: "Please provide an email address to receive your order confirmation.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast({
+        title: "Invalid email",
+        description: "Please provide a valid email address.",
         variant: "destructive",
       });
       return;
@@ -65,7 +89,9 @@ const Cart = () => {
       const orderData: OrderCreate = {
         total_amount: total,
         delivery_address: deliveryAddress,
-        phone_number: phoneNumber,
+        phone_number: email, // Keep this for backward compatibility
+        email: email, // Add the new email field
+        customer_name: customerName,
         notes: notes || undefined,
         order_items: items.map(item => ({
           sweet_id: parseInt(item.sweetId),
@@ -81,16 +107,90 @@ const Cart = () => {
         await apiClient.createOrder(orderData);
       } catch (apiError) {
         console.log('API not available, using mock order success');
+        
+        // Show email content in console for immediate testing
+        console.log('\n' + '='.repeat(60));
+        console.log('📧 ORDER CONFIRMATION EMAIL');
+        console.log('='.repeat(60));
+        console.log(`To: ${email}`);
+        console.log(`Subject: Order Confirmation - Order #${Date.now()}`);
+        console.log(`From: Kata Sweet Shop <tejasdharmale6@gmail.com>`);
+        console.log('='.repeat(60));
+        console.log('📄 EMAIL CONTENT:');
+        console.log('='.repeat(60));
+        console.log(`Kata Sweet Shop - Order Confirmation
+
+Dear ${customerName},
+
+Thank you for your order! We're delighted to confirm that we've received your order and it's being prepared with love and care.
+
+ORDER DETAILS:
+Order ID: #${Date.now()}
+Order Date: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}
+Customer Name: ${customerName}
+Total Amount: ₹${total}
+
+ORDER ITEMS:
+${items.map(item => `- ${item.name} (${item.selectedQuantity}) x${item.quantity} = ₹${item.price}`).join('\n')}
+
+DELIVERY INFORMATION:
+Delivery Address: ${deliveryAddress}
+Email: ${email}
+${notes ? `Special Notes: ${notes}` : ''}
+
+DELIVERY STATUS:
+Your package will be delivered soon!
+We'll send you another email once your order is on its way. 
+Estimated delivery time: 2-4 hours for local orders.
+
+NEED HELP?
+Phone: +91 9067722873
+Email: tejasdharmale6@gmail.com
+
+Thank you for choosing Kata Sweet Shop!
+This email was sent to ${email}`);
+        console.log('='.repeat(60));
+        
         // Simulate API delay
         await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+      
+      // Create order object for receipt
+      const orderForReceipt = {
+        id: Date.now().toString(),
+        customer_name: customerName,
+        email: email,
+        total_amount: total,
+        status: 'confirmed',
+        delivery_address: deliveryAddress,
+        phone_number: email,
+        notes: notes,
+        created_at: new Date().toISOString(),
+        items: items.map(item => ({
+          sweet_name: item.name,
+          selected_quantity: item.selectedQuantity,
+          quantity: item.quantity,
+          price: item.price
+        }))
+      };
+
+      setLastOrder(orderForReceipt);
+      setShowReceipt(true);
+      
+      // Save order to localStorage for order history
+      try {
+        const existingOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+        existingOrders.unshift(orderForReceipt); // Add to beginning of array
+        localStorage.setItem('orderHistory', JSON.stringify(existingOrders));
+      } catch (error) {
+        console.error('Error saving order to history:', error);
       }
       
       clearCart();
       toast({
         title: "Order placed successfully!",
-        description: "Your order has been placed and will be delivered soon. Thank you!",
+        description: `Your order has been placed and confirmation email will be sent to ${email}. Thank you!`,
       });
-      navigate('/');
     } catch (error) {
       console.error('Order error:', error);
       toast({
@@ -217,6 +317,18 @@ const Cart = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
+                    <Label htmlFor="customerName">Customer Name *</Label>
+                    <Input
+                      id="customerName"
+                      type="text"
+                      placeholder="Enter your full name"
+                      value={customerName}
+                      onChange={(e) => setCustomerName(e.target.value)}
+                      className="mt-1"
+                    />
+                  </div>
+                  
+                  <div>
                     <Label htmlFor="address">Delivery Address *</Label>
                     <Textarea
                       id="address"
@@ -228,13 +340,13 @@ const Cart = () => {
                   </div>
                   
                   <div>
-                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Label htmlFor="email">Email Address *</Label>
                     <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="Enter your phone number"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      id="email"
+                      type="email"
+                      placeholder="Enter your email address for order confirmation"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       className="mt-1"
                     />
                   </div>
@@ -263,7 +375,7 @@ const Cart = () => {
                     <span>₹{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Tax (10%)</span>
+                    <span>Tax (18% GST)</span>
                     <span>₹{tax.toFixed(2)}</span>
                   </div>
                   <div className="border-t pt-4">
@@ -274,6 +386,7 @@ const Cart = () => {
                   </div>
                   
                   <Button 
+                    variant="candy"
                     className="w-full" 
                     size="lg" 
                     onClick={handleCheckout}
@@ -289,12 +402,31 @@ const Cart = () => {
                   >
                     Continue Shopping
                   </Button>
+                  
+                  {lastOrder && (
+                    <Button 
+                      variant="secondary" 
+                      className="w-full" 
+                      onClick={() => setShowReceipt(true)}
+                    >
+                      <ReceiptIcon className="h-4 w-4 mr-2" />
+                      View Last Receipt
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             </div>
           </div>
         )}
       </main>
+
+      {/* Receipt Modal */}
+      {showReceipt && lastOrder && (
+        <Receipt 
+          order={lastOrder} 
+          onClose={() => setShowReceipt(false)}
+        />
+      )}
     </div>
   );
 };

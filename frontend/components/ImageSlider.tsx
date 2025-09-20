@@ -73,10 +73,10 @@ export function ImageSlider({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Main Image Container with Cool Effects */}
-      <div className="relative overflow-hidden rounded-3xl shadow-2xl transform transition-all duration-700 hover:scale-105 hover:shadow-3xl">
-        {/* Image with Parallax Effect */}
-        <div className="relative h-96 overflow-hidden">
+          {/* Main Image Container with Cool Effects */}
+          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl transform transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+            {/* Image with Parallax Effect */}
+            <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden">
           <img
             src={images[currentIndex].src}
             alt={images[currentIndex].alt}
@@ -111,45 +111,45 @@ export function ImageSlider({
         </div>
       </div>
 
-      {/* Enhanced Navigation Arrows */}
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={goToPrevious}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-500 hover:scale-110 shadow-2xl border-2 border-white/20"
-      >
-        <ChevronLeft className="h-6 w-6 text-gray-800" />
-      </Button>
+              {/* Enhanced Navigation Arrows */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={goToPrevious}
+                className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 shadow-lg sm:shadow-2xl border border-white/20 h-8 w-8 sm:h-10 sm:w-10"
+              >
+                <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6 text-gray-800" />
+              </Button>
 
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={goToNext}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-500 hover:scale-110 shadow-2xl border-2 border-white/20"
-      >
-        <ChevronRight className="h-6 w-6 text-gray-800" />
-      </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={goToNext}
+                className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 shadow-lg sm:shadow-2xl border border-white/20 h-8 w-8 sm:h-10 sm:w-10"
+              >
+                <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6 text-gray-800" />
+              </Button>
 
 
-      {/* Enhanced Dots Indicator */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`relative transition-all duration-500 hover:scale-125 ${
-              index === currentIndex
-                ? 'w-8 h-3 bg-white shadow-lg rounded-full'
-                : 'w-3 h-3 bg-white/60 hover:bg-white/80 rounded-full'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          >
-            {index === currentIndex && (
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-amber-500 rounded-full animate-pulse"></div>
-            )}
-          </button>
-        ))}
-      </div>
+              {/* Enhanced Dots Indicator */}
+              <div className="absolute bottom-3 sm:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3">
+                {images.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`relative transition-all duration-300 hover:scale-110 ${
+                      index === currentIndex
+                        ? 'w-6 sm:w-8 h-2 sm:h-3 bg-white shadow-md sm:shadow-lg rounded-full'
+                        : 'w-2 sm:w-3 h-2 sm:h-3 bg-white/60 hover:bg-white/80 rounded-full'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  >
+                    {index === currentIndex && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-amber-500 rounded-full"></div>
+                    )}
+                  </button>
+                ))}
+              </div>
 
 
       {/* Progress Bar */}

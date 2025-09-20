@@ -43,33 +43,33 @@ export function FilterBar({
   ];
 
   return (
-    <div className="bg-card border rounded-lg p-4 space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="bg-card border rounded-lg p-3 sm:p-4 space-y-3 sm:space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
         <div className="flex items-center space-x-2">
           <Filter className="h-4 w-4 text-muted-foreground" />
-          <span className="font-medium">Filters</span>
-          <Badge variant="secondary">{totalResults} results</Badge>
+          <span className="font-medium text-sm sm:text-base">Filters</span>
+          <Badge variant="secondary" className="text-xs sm:text-sm">{totalResults} results</Badge>
         </div>
         {hasActiveFilters && (
           <Button 
             variant="ghost" 
             size="sm" 
             onClick={onClearFilters}
-            className="text-muted-foreground hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground h-8 sm:h-9"
           >
-            <X className="h-4 w-4 mr-2" />
-            Clear All
+            <X className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+            <span className="text-xs sm:text-sm">Clear All</span>
           </Button>
         )}
       </div>
 
-      <div className="flex flex-wrap gap-4">
-        <div className="min-w-[160px]">
+      <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4">
+        <div className="w-full sm:min-w-[160px] sm:flex-1">
           <Select 
             value={filters.category} 
             onValueChange={(value) => onFilterChange({ ...filters, category: value })}
           >
-            <SelectTrigger>
+            <SelectTrigger className="h-9 sm:h-10">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
@@ -83,12 +83,12 @@ export function FilterBar({
           </Select>
         </div>
 
-        <div className="min-w-[160px]">
+        <div className="w-full sm:min-w-[160px] sm:flex-1">
           <Select 
             value={filters.priceRange} 
             onValueChange={(value) => onFilterChange({ ...filters, priceRange: value })}
           >
-            <SelectTrigger>
+            <SelectTrigger className="h-9 sm:h-10">
               <SelectValue placeholder="Price Range" />
             </SelectTrigger>
             <SelectContent>
@@ -101,12 +101,12 @@ export function FilterBar({
           </Select>
         </div>
 
-        <div className="min-w-[160px]">
+        <div className="w-full sm:min-w-[160px] sm:flex-1">
           <Select 
             value={filters.sortBy} 
             onValueChange={(value) => onFilterChange({ ...filters, sortBy: value })}
           >
-            <SelectTrigger>
+            <SelectTrigger className="h-9 sm:h-10">
               <SelectValue placeholder="Sort By" />
             </SelectTrigger>
             <SelectContent>
