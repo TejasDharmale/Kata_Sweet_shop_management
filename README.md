@@ -70,14 +70,11 @@ Copy code
 Update API base URL if needed in `frontend/lib/api.ts`.
 
 ## Key Features
-- JWT-based authentication (login/register) with Google OAuth integration
+- JWT-based authentication (login/register)
 - Role-based access for admin operations
 - CRUD for sweets with search, purchase, restock
-- Order management with PDF receipt generation
-- Customer feedback system with email notifications
 - Polished UI with product cards, images, and responsive layout
 - Live customer support chat integration via Tawk.to
-- Comprehensive navigation with multiple pages and links
 
 ## MVC-style Backend Overview
 - Models: `backend/app/models/models.py`
@@ -156,4 +153,4 @@ Tests use a SQLite test database and override dependencies for isolation.
 ---
 
 ## Conclusion
-The Kata Sweet Shop Management system showcases how modern web technologies, combined with thoughtful AI integr
+The Kata Sweet Shop Management system showcases how modern web technologies, combined with FastApi and Vite
