@@ -1,5 +1,7 @@
 # Kata Sweet Shop Management 
 
+<img width="389" height="717" alt="image" src="https://github.com/user-attachments/assets/cee6ddde-89ee-4996-b9cd-cd0689687517" />
+
 A modular Sweet Shop application with a FastAPI + PostgreSQL backend and a Vite + React + TypeScript frontend. The project follows an MVC-inspired structure on the backend and a clean component architecture on the frontend.
 
 ## Tech Stack
@@ -7,7 +9,8 @@ A modular Sweet Shop application with a FastAPI + PostgreSQL backend and a Vite 
 - Database: PostgreSQL (psycopg2)
 - Frontend: Vite, React, TypeScript, Tailwind CSS, shadcn/ui
 - Testing: Pytest, HTTPX (FastAPI TestClient)
-
+- 
+<img width="786" height="777" alt="image" src="https://github.com/user-attachments/assets/b55a205c-67a4-44d7-a0e2-2e3dcbee8238" />
 ## Repository Structure
 ```
 backend/
@@ -53,6 +56,8 @@ python run_backend.py      # runs on http://localhost:8000
 
 On first startup, an admin user and sample sweets are seeded.
 
+<img width="1616" height="767" alt="image" src="https://github.com/user-attachments/assets/5ac67fe1-43b8-430f-8204-c3dc55f57aae" />
+
 ## Frontend: Setup & Run
 ```
 cd frontend
@@ -82,6 +87,8 @@ pytest -q
 ```
 Tests use a SQLite test database and override dependencies for isolation.
 
+<img width="1512" height="723" alt="image" src="https://github.com/user-attachments/assets/829e9703-a430-4dc1-811d-8c56940079e4" />
+
 #### 1.Primary Development Partner**
 -
 - **Frontend Development**: Used Claude to build the React + TypeScript frontend with modern UI components, responsive design, and state management
@@ -97,7 +104,7 @@ Tests use a SQLite test database and override dependencies for isolation.
 
 
 ### Reflection on AI Impact
-<img width="389" height="717" alt="image" src="https://github.com/user-attachments/assets/cee6ddde-89ee-4996-b9cd-cd0689687517" />
+
 
 #### **Positive Impacts:**
 - **Accelerated Development**: AI tools reduced development time by approximately 60-70%, allowing me to focus on higher-level architecture and user experience
@@ -106,20 +113,20 @@ Tests use a SQLite test database and override dependencies for isolation.
 - **Creative Problem Solving**: AI offered multiple approaches to challenges, expanding my problem-solving toolkit
 - **Documentation**: AI assistance made comprehensive documentation more manageable and thorough
 
-<img width="786" height="777" alt="image" src="https://github.com/user-attachments/assets/b55a205c-67a4-44d7-a0e2-2e3dcbee8238" />
+<img width="1882" height="829" alt="image" src="https://github.com/user-attachments/assets/90ae81eb-cbdc-4b16-b0b3-4be4d383d01b" />
 
 #### **Challenges and Learning:**
 - **Context Understanding**: Sometimes AI suggestions didn't perfectly match the project context, requiring careful review and adaptation
 - **Debugging Complexity**: When AI-generated code had issues, debugging became more complex as I needed to understand both the problem and the AI's reasoning
 
-<img width="1616" height="767" alt="image" src="https://github.com/user-attachments/assets/5ac67fe1-43b8-430f-8204-c3dc55f57aae" />
 
+<img width="1681" height="848" alt="image" src="https://github.com/user-attachments/assets/a63317ce-197a-4853-ace3-045810729481" />
 #### **Responsible AI Usage:**
 - **Code Review**: Always reviewed and understood AI-generated code before implementation
 - **Learning First**: Used AI as a learning tool rather than a replacement for understanding core concepts
 - **Customization**: Adapted AI suggestions to fit the specific project requirements and coding standards
 - **Testing**: Thoroughly tested all AI-assisted code to ensure functionality and security
-<img width="1512" height="723" alt="image" src="https://github.com/user-attachments/assets/829e9703-a430-4dc1-811d-8c56940079e4" />
+
 
 #### **Workflow Integration:**
 - **Iterative Development**: Used AI in an iterative manner - generate, review, test, refine
@@ -134,17 +141,11 @@ Tests use a SQLite test database and override dependencies for isolation.
 - **Navigation**: Use header (Home/Cart/Orders) and footer links (About/Contact/Policies)
 - **Emails: All** orders and feedback automatically send email confirmations
 
-<img width="1882" height="829" alt="image" src="https://github.com/user-attachments/assets/90ae81eb-cbdc-4b16-b0b3-4be4d383d01b" />
-
-
-<img width="1681" height="848" alt="image" src="https://github.com/user-attachments/assets/a63317ce-197a-4853-ace3-045810729481" />
-
-
 <img width="1560" height="629" alt="image" src="https://github.com/user-attachments/assets/85b5fbd0-f7c7-4e57-84dd-ed31e3bafd14" />
 <img width="1896" height="849" alt="image" src="https://github.com/user-attachments/assets/9493b0f4-73b3-45b0-9b46-52796d381e99" />
 
 ### Conclusion
-AI tools significantly enhanced my development workflow by accelerating code generation, providing learning opportunities, and offering alternative problem-solving approaches. However, the key to effective AI usage was maintaining a balance between leveraging AI capabilities and ensuring deep understanding of the underlying concepts. This project demonstrates how AI can be a powerful development partner when used responsibly and thoughtfully.
+ The Kata Sweet Shop Management system showcases how modern web technologies, combined with thoughtful AI integration, can create robust, user-friendly applications that solve real-world business challenges.
 
 
 
