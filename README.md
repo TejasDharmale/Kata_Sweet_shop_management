@@ -55,7 +55,7 @@ python run_backend.py      # runs on http://localhost:8000
 
 On first startup, an admin user and sample sweets are seeded.
 
-<img width="1616" height="767" alt="image" src="https://github.com/user-attachments/assets/5ac67fe1-43b8-430f-8204-c3dc55f57aae" />
+<img width="1616" height="767" alt="image" src="https://github.com/user-attachments/assets/5ac67fe1-43b8-430f-8204-c3dc55f57aae"/>
 
 ## Frontend: Setup & Run
 ```
@@ -86,7 +86,7 @@ pytest -q
 ```
 Tests use a SQLite test database and override dependencies for isolation.
 
-<img width="1512" height="723" alt="image" src="https://github.com/user-attachments/assets/829e9703-a430-4dc1-811d-8c56940079e4" />
+
 
 #### 1.Primary Development Partner**
 -
@@ -94,6 +94,7 @@ Tests use a SQLite test database and override dependencies for isolation.
 - **API Integration**: Developed RESTful API endpoints with proper error handling, validation, and documentation
 - **Code Optimization**: Refactored code for better performance, maintainability, and following React best practices
 - **Troubleshooting**: Resolved complex issues like CORS configuration, image optimization, and build processes
+<img width="1512" height="723" alt="image" src="https://github.com/user-attachments/assets/829e9703-a430-4dc1-811d-8c56940079e4" />
 
 #### 2. **GitHub Copilot - Code Acceleration**
 
@@ -120,6 +121,7 @@ Tests use a SQLite test database and override dependencies for isolation.
 
 
 <img width="1681" height="848" alt="image" src="https://github.com/user-attachments/assets/a63317ce-197a-4853-ace3-045810729481" />
+
 #### **Responsible AI Usage:**
 - **Code Review**: Always reviewed and understood AI-generated code before implementation
 - **Learning First**: Used AI as a learning tool rather than a replacement for understanding core concepts
