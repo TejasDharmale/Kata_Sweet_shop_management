@@ -1,6 +1,5 @@
 # Kata Sweet Shop Management 
 
-<img width="389" height="717" alt="image" src="https://github.com/user-attachments/assets/cee6ddde-89ee-4996-b9cd-cd0689687517" />
 
 A modular Sweet Shop application with a FastAPI + PostgreSQL backend and a Vite + React + TypeScript frontend. The project follows an MVC-inspired structure on the backend and a clean component architecture on the frontend.
 
