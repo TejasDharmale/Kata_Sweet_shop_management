@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Heart, ShoppingCart, Edit, Trash2 } from "lucide-react";
+import { Heart, ShoppingCart, Edit, Trash2, CreditCard } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
 import { Sweet } from "@/data/mockSweets";
@@ -77,6 +77,19 @@ export function SweetCard({
         navigate('/cart');
       }, 500);
     }
+  };
+
+  const handlePurchase = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Login required",
+        description: "Please login to make a purchase.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    navigate(`/purchase/${sweet.id}`);
   };
 
   const getCategoryColor = (category: string) => {
@@ -183,18 +196,30 @@ export function SweetCard({
             </Button>
           </div>
         ) : (
-          <Button 
-            variant={isOutOfStock ? "outline" : "candy"} 
-            size="sm" 
-            disabled={isOutOfStock || isAdding}
-            onClick={handleAddToCart}
-            className="w-full h-9 sm:h-10"
-          >
-            <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-            <span className="text-xs sm:text-sm">
-              {isAdding ? "Adding..." : isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
-            </span>
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              variant={isOutOfStock ? "outline" : "candy"} 
+              size="sm" 
+              disabled={isOutOfStock || isAdding}
+              onClick={handleAddToCart}
+              className="flex-1 h-9 sm:h-10"
+            >
+              <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              <span className="text-xs sm:text-sm">
+                {isAdding ? "Adding..." : isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+              </span>
+            </Button>
+            <Button 
+              variant="outline"
+              size="sm" 
+              disabled={isOutOfStock}
+              onClick={handlePurchase}
+              className="flex-1 h-9 sm:h-10"
+            >
+              <CreditCard className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              <span className="text-xs sm:text-sm">Purchase</span>
+            </Button>
+          </div>
         )}
       </CardFooter>
     </Card>

@@ -9,6 +9,8 @@ import Index from "./pages/Index";
 import Cart from "./pages/Cart";
 import Favorites from "./pages/Favorites";
 import OrderHistory from "./pages/OrderHistory";
+import Purchase from "./pages/Purchase";
+import PurchasePage from "./pages/PurchasePage";
 import NotFound from "./pages/NotFound";
 import { ContactUs } from "./pages/ContactUs";
 import { CommunityFeedback } from "./pages/CommunityFeedback";
@@ -32,6 +34,8 @@ const App = () => (
             <Route path="/cart" element={<Cart />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/order-history" element={<OrderHistory />} />
+            <Route path="/purchase" element={<Purchase />} />
+            <Route path="/purchase/:sweetId" element={<PurchasePage />} />
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/community-feedback" element={<CommunityFeedback />} />

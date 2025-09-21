@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, ShoppingCart, User, Heart, ShoppingBag } from "lucide-react";
+import { Search, ShoppingCart, User, Heart, ShoppingBag, CreditCard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import logoImage from "@/images/Emblem Style Logo for Kata Sweet Shop.png";
 
@@ -110,17 +110,31 @@ export function Header({
             </div>
 
             {isAuthenticated && (
-              <div className="flex flex-col items-center">
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  onClick={() => navigate('/order-history')}
-                  className="hover:text-primary transition-colors h-10 w-10 sm:h-12 sm:w-12"
-                >
-                  <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5" />
-                </Button>
-                <span className="text-xs text-muted-foreground mt-1">Orders</span>
-              </div>
+              <>
+                <div className="flex flex-col items-center">
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    onClick={() => navigate('/purchase')}
+                    className="hover:text-primary transition-colors h-10 w-10 sm:h-12 sm:w-12"
+                  >
+                    <CreditCard className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </Button>
+                  <span className="text-xs text-muted-foreground mt-1">Purchase</span>
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    onClick={() => navigate('/order-history')}
+                    className="hover:text-primary transition-colors h-10 w-10 sm:h-12 sm:w-12"
+                  >
+                    <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </Button>
+                  <span className="text-xs text-muted-foreground mt-1">Orders</span>
+                </div>
+              </>
             )}
 
             <div className="flex flex-col items-center">
