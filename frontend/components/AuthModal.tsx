@@ -61,7 +61,7 @@ export function AuthModal({ isOpen, onClose, onLogin, onRegister, onGoogleAuth, 
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] max-w-md mx-4 sm:mx-auto">
+      <DialogContent className="w-[95vw] max-w-md mx-4 sm:mx-auto max-h-[95vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
         {!isAuthenticated && (
           <DialogHeader>
             <DialogTitle className="text-center text-2xl bg-gradient-candy bg-clip-text text-transparent">
@@ -211,8 +211,8 @@ export function AuthModal({ isOpen, onClose, onLogin, onRegister, onGoogleAuth, 
                     Join our mithai community and start your sweet journey
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleRegister} className="space-y-4">
+                <CardContent className="max-h-[65vh] overflow-y-auto pr-2 pb-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                  <form onSubmit={handleRegister} className="space-y-4 pb-4">
                     <div className="space-y-2">
                       <Label htmlFor="register-name">Full Name</Label>
                       <div className="relative">
