@@ -326,28 +326,54 @@ const Index = () => {
         }}
       />
 
-      <main className="container mx-auto px-4 py-12" id="sweets-section">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-3xl font-bold mb-2">Our Sweet Collection</h2>
-            <p className="text-muted-foreground">Discover our carefully curated selection of traditional Indian sweets</p>
+      {isAuthenticated && (
+        <main className="container mx-auto px-4 py-12" id="sweets-section">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-3xl font-bold mb-2">Our Sweet Collection</h2>
+              <p className="text-muted-foreground">Discover our carefully curated selection of traditional Indian sweets</p>
+            </div>
+            {isAdmin && (
+              <Button variant="outline" onClick={() => setShowAdmin(true)}>
+                Admin Dashboard
+              </Button>
+            )}
           </div>
-          {isAdmin && (
-            <Button variant="outline" onClick={() => setShowAdmin(true)}>
-              Admin Dashboard
-            </Button>
+
+          <FilterBar
+            filters={filters}
+            onFilterChange={setFilters}
+            onClearFilters={() => setFilters({ category: 'all', priceRange: 'all', sortBy: 'name' })}
+            categories={categories}
+            totalResults={filteredSweets.length}
+          />
+
+          {filteredSweets.length === 0 ? (
+            <div className="text-center py-12">
+              <h3 className="text-xl font-semibold mb-2">No mithai found</h3>
+              <p className="text-muted-foreground">Try adjusting your search or filters</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+              {filteredSweets.map((sweet) => (
+                <SweetCard
+                  key={sweet.id}
+                  sweet={sweet}
+                  isAdmin={isAdmin}
+                  onPurchase={handlePurchase}
+                  onEdit={handleUpdateSweet}
+                  onDelete={handleDeleteSweet}
+                  onToggleFavorite={handleToggleFavorite}
+                  isFavorite={favorites.has(sweet.id)}
+                />
+              ))}
+            </div>
           )}
-        </div>
+        </main>
+      )}
 
-        <FilterBar
-          filters={filters}
-          onFilterChange={setFilters}
-          onClearFilters={() => setFilters({ category: 'all', priceRange: 'all', sortBy: 'name' })}
-          categories={categories}
-          totalResults={filteredSweets.length}
-        />
-
-        {!isAuthenticated ? (
+      {!isAuthenticated && (
+        <main className="container mx-auto px-4 py-12" id="sweets-section">
           <div className="text-center py-12">
             <h3 className="text-xl font-semibold mb-2">Please log in to view our mithai collection</h3>
             <p className="text-muted-foreground mb-4">Create an account or sign in to explore our sweet offerings</p>
@@ -355,28 +381,8 @@ const Index = () => {
               Get Started
             </Button>
           </div>
-        ) : filteredSweets.length === 0 ? (
-          <div className="text-center py-12">
-            <h3 className="text-xl font-semibold mb-2">No mithai found</h3>
-            <p className="text-muted-foreground">Try adjusting your search or filters</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
-            {filteredSweets.map((sweet) => (
-              <SweetCard
-                key={sweet.id}
-                sweet={sweet}
-                isAdmin={isAdmin}
-                onPurchase={handlePurchase}
-                onEdit={handleUpdateSweet}
-                onDelete={handleDeleteSweet}
-                onToggleFavorite={handleToggleFavorite}
-                isFavorite={favorites.has(sweet.id)}
-              />
-            ))}
-          </div>
-        )}
-      </main>
+        </main>
+      )}
 
       <Testimonials />
       <FeedbackCommunity />
