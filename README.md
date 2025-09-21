@@ -1,6 +1,8 @@
 # Kata Sweet Shop Management 
 Website = "https://katamithia.netlify.app/"
 
+**Please for 1-2 min after google login**
+
 A modular Sweet Shop application with a FastAPI + PostgreSQL backend and a Vite + React + TypeScript frontend. The project follows an MVC-inspired structure on the backend and a clean component architecture on the frontend.
 
 ## Tech Stack
