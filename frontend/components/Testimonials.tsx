@@ -86,37 +86,37 @@ export function Testimonials() {
 
         <div className="max-w-4xl mx-auto">
           <Card className="relative overflow-hidden">
-            <CardContent className="p-8">
-              <div className="flex items-start space-x-4">
+            <CardContent className="p-4 sm:p-8">
+              <div className="flex items-start space-x-3 sm:space-x-4">
                 <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-gradient-candy rounded-full flex items-center justify-center text-2xl font-bold text-white">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-candy rounded-full flex items-center justify-center text-lg sm:text-2xl font-bold text-white">
                     {current.name.charAt(0)}
                   </div>
                 </div>
                 
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <div>
-                      <h3 className="font-semibold text-lg">{current.name}</h3>
-                      <p className="text-sm text-muted-foreground">{current.location}</p>
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
+                    <div className="min-w-0">
+                      <h3 className="font-semibold text-base sm:text-lg truncate">{current.name}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground truncate">{current.location}</p>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 flex-shrink-0">
                       <div className="flex items-center space-x-1">
                         {[...Array(current.rating)].map((_, i) => (
-                          <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <Star key={i} className="h-3 w-3 sm:h-4 sm:w-4 fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
                     </div>
                   </div>
                   
                   <div className="mb-4">
-                    <Quote className="h-6 w-6 text-primary/20 mb-2" />
-                    <p className="text-gray-700 italic">"{current.comment}"</p>
+                    <Quote className="h-5 w-5 sm:h-6 sm:w-6 text-primary/20 mb-2" />
+                    <p className="text-sm sm:text-base text-gray-700 italic break-words">"{current.comment}"</p>
                   </div>
                   
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    <span>Ordered: {current.order}</span>
-                    <span>{currentTestimonial + 1} of {testimonials.length}</span>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm text-muted-foreground">
+                    <span className="break-words">Ordered: {current.order}</span>
+                    <span className="flex-shrink-0">{currentTestimonial + 1} of {testimonials.length}</span>
                   </div>
                 </div>
               </div>
@@ -124,12 +124,12 @@ export function Testimonials() {
           </Card>
 
           {/* Testimonial Indicators */}
-          <div className="flex justify-center space-x-2 mt-6">
+          <div className="flex justify-center space-x-2 mt-4 sm:mt-6">
             {testimonials.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentTestimonial(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
+                className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
                   index === currentTestimonial ? 'bg-primary' : 'bg-muted'
                 }`}
               />
