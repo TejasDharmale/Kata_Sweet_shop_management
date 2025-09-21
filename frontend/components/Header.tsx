@@ -29,15 +29,8 @@ export function Header({
   const navigate = useNavigate();
 
   const handleCartClick = () => {
-    if (!isAuthenticated) {
-      if (showAuthModal) {
-        showAuthModal();
-      } else {
-        navigate('/');
-      }
-    } else {
-      onCartClick();
-    }
+    // Always navigate to cart page - let Cart component handle auth
+    navigate('/cart');
   };
 
   return (

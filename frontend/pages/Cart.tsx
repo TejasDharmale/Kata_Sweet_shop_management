@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { Header } from '@/components/Header';
@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Trash2, Plus, Minus, ShoppingBag, Receipt as ReceiptIcon } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, Receipt as ReceiptIcon, ExternalLink } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { apiClient, OrderCreate } from '@/lib/api';
@@ -19,6 +19,23 @@ const Cart = () => {
   const { items, itemCount, totalPrice, updateQuantity, removeItem, clearCart } = useCart();
   const { toast } = useToast();
   const navigate = useNavigate();
+  
+  // Check authentication on component mount
+  useEffect(() => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Login Required",
+        description: "Please log in to view your cart.",
+        variant: "destructive",
+      });
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate, toast]);
+  
+  // Don't render cart content if not authenticated
+  if (!isAuthenticated) {
+    return null;
+  }
   
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [email, setEmail] = useState('');
@@ -270,7 +287,11 @@ This email was sent to ${email}`);
                   <Card key={item.id}>
                     <CardContent className="p-6">
                       <div className="flex items-center space-x-4">
-                        <div className="w-20 h-20 rounded-lg bg-muted overflow-hidden">
+                        {/* Clickable image area */}
+                        <div 
+                          className="w-20 h-20 rounded-lg bg-muted overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
+                          onClick={() => navigate(`/purchase/${item.sweetId}`)}
+                        >
                           {item.image ? (
                             <img 
                               src={item.image} 
@@ -284,15 +305,26 @@ This email was sent to ${email}`);
                           )}
                         </div>
                         
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-lg">{item.name}</h3>
+                        {/* Clickable content area */}
+                        <div 
+                          className="flex-1 cursor-pointer hover:bg-muted/50 p-2 rounded-md transition-colors"
+                          onClick={() => navigate(`/purchase/${item.sweetId}`)}
+                        >
+                          <h3 className="font-semibold text-lg hover:text-primary transition-colors">{item.name}</h3>
                           <p className="text-primary font-bold text-lg">₹{item.price}</p>
                           <Badge variant="secondary" className="mt-1">
                             {item.selectedQuantity}
                           </Badge>
+                          <div className="flex items-center gap-1 mt-1">
+                            <ExternalLink className="h-3 w-3 text-muted-foreground" />
+                            <p className="text-sm text-muted-foreground">Click to view details</p>
+                          </div>
                         </div>
                         
-                        <div className="flex items-center space-x-2">
+                        <div 
+                          className="flex items-center space-x-2"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <Button
                             variant="outline"
                             size="icon"
@@ -312,7 +344,10 @@ This email was sent to ${email}`);
                           </Button>
                         </div>
                         
-                        <div className="text-right">
+                        <div 
+                          className="text-right"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <p className="font-semibold">₹{(item.price * item.quantity).toFixed(2)}</p>
                           <Button
                             variant="ghost"
