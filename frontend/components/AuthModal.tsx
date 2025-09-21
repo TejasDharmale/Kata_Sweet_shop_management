@@ -39,6 +39,13 @@ export function AuthModal({ isOpen, onClose, onLogin, onRegister, onGoogleAuth, 
       alert('Passwords do not match');
       return;
     }
+    
+    // Phone number validation: 10 digits starting with 6,7,8,9
+    if (registerForm.phone && !/^[6-9]\d{9}$/.test(registerForm.phone)) {
+      alert('Phone number must be 10 digits starting with 6, 7, 8, or 9.');
+      return;
+    }
+    
     onRegister(registerForm.name, registerForm.email, registerForm.password, registerForm.phone);
   };
 
@@ -245,10 +252,15 @@ export function AuthModal({ isOpen, onClose, onLogin, onRegister, onGoogleAuth, 
                         <Input
                           id="register-phone"
                           type="tel"
-                          placeholder="Enter your phone number"
+                          placeholder="Enter 10-digit number (6-9xxxxxxxxx)"
                           value={registerForm.phone}
-                          onChange={(e) => setRegisterForm({ ...registerForm, phone: e.target.value })}
+                          onChange={(e) => {
+                            // Only allow digits and limit to 10 digits
+                            const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                            setRegisterForm({ ...registerForm, phone: value });
+                          }}
                           className="pl-10"
+                          maxLength={10}
                           required
                         />
                       </div>

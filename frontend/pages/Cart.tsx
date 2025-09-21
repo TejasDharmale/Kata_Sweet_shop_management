@@ -82,6 +82,17 @@ const Cart = () => {
       return;
     }
 
+    // Phone number validation: 10 digits starting with 6,7,8,9
+    const phoneRegex = /^[6-9]\d{9}$/;
+    if (!phoneRegex.test(phoneNumber.replace(/\s/g, ''))) {
+      toast({
+        title: "Invalid phone number",
+        description: "Phone number must be 10 digits starting with 6, 7, 8, or 9.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -366,10 +377,11 @@ This email was sent to ${email}`);
                     <Input
                       id="phoneNumber"
                       type="tel"
-                      placeholder="Enter your phone number"
+                      placeholder="Enter 10-digit number (6-9xxxxxxxxx)"
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                       className="mt-1"
+                      maxLength={10}
                     />
                   </div>
                   

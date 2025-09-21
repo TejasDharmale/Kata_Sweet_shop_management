@@ -27,6 +27,13 @@ export function ContactUs() {
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
+    // Phone number validation: 10 digits starting with 6,7,8,9
+    if (formData.phone && !/^[6-9]\d{9}$/.test(formData.phone)) {
+      setSubmitStatus('error');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       const success = await sendContactEmailJS(formData);
       
@@ -222,7 +229,7 @@ export function ContactUs() {
                           }));
                         }}
                         className="border-gray-300 focus:border-orange-500 focus:ring-orange-500"
-                        placeholder="9067722873"
+                        placeholder="Enter 10-digit number (6-9xxxxxxxxx)"
                         maxLength={10}
                       />
                     </div>
