@@ -13,6 +13,7 @@ interface HeaderProps {
   onCartClick: () => void;
   onSearch: (query: string) => void;
   searchQuery: string;
+  showAuthModal?: () => void;
 }
 
 export function Header({ 
@@ -22,9 +23,23 @@ export function Header({
   onAuthClick, 
   onCartClick, 
   onSearch,
-  searchQuery 
+  searchQuery,
+  showAuthModal
 }: HeaderProps) {
   const navigate = useNavigate();
+
+  const handleCartClick = () => {
+    if (!isAuthenticated) {
+      if (showAuthModal) {
+        showAuthModal();
+      } else {
+        navigate('/');
+      }
+    } else {
+      onCartClick();
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
       <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-8">
@@ -93,7 +108,7 @@ export function Header({
               <Button 
                 variant="ghost" 
                 size="icon" 
-                onClick={() => navigate('/cart')}
+                onClick={handleCartClick}
                 className={`relative h-12 w-12 sm:h-14 sm:w-14 ${cartCount > 0 ? 'text-accent' : ''}`}
               >
                 <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6" />

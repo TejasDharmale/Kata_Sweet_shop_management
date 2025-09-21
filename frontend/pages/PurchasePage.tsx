@@ -15,6 +15,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { useToast } from '@/hooks/use-toast';
 import { mockSweets, Sweet } from '@/data/mockSweets';
+import { apiClient, OrderCreate } from '@/lib/api';
 import { ArrowLeft, ShoppingCart, CreditCard, CheckCircle } from 'lucide-react';
 
 const PurchasePage = () => {
@@ -147,43 +148,89 @@ const PurchasePage = () => {
     setIsPlacingOrder(true);
 
     try {
-      // Simulate order processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Create order object for receipt
-      const orderForReceipt = {
-        id: Date.now().toString(),
-        customer_name: customerName,
-        email: email,
+      // Create order data for API
+      const orderData: OrderCreate = {
         total_amount: total,
-        status: 'confirmed',
         delivery_address: deliveryAddress,
         phone_number: phoneNumber,
-        notes: notes,
-        created_at: new Date().toISOString(),
-        items: [{
+        email: email,
+        customer_name: customerName,
+        notes: notes || undefined,
+        order_items: [{
+          sweet_id: parseInt(sweet.id),
           sweet_name: `${sweet.name} (${selectedQuantity})`,
+          selected_quantity: selectedQuantity,
           quantity: quantity,
           price: subtotal
         }]
       };
 
-      setLastOrder(orderForReceipt);
-      setShowReceipt(true);
-      
-      // Save order to localStorage for order history
+      // Try to create order via API, fallback to mock success if backend is not available
+      let orderForReceipt;
       try {
-        const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-        existingOrders.push(orderForReceipt);
-        localStorage.setItem('orders', JSON.stringify(existingOrders));
-      } catch (error) {
-        console.error('Error saving order to localStorage:', error);
+        const apiOrder = await apiClient.createOrder(orderData);
+        
+        // Create receipt object from API response
+        orderForReceipt = {
+          id: apiOrder.id.toString(),
+          customer_name: (apiOrder as any).customer_name || customerName,
+          email: (apiOrder as any).email || email,
+          total_amount: apiOrder.total_amount,
+          status: apiOrder.status,
+          delivery_address: apiOrder.delivery_address,
+          phone_number: apiOrder.phone_number,
+          notes: apiOrder.notes,
+          created_at: apiOrder.created_at,
+          items: apiOrder.order_items.map(item => ({
+            sweet_name: item.sweet_name,
+            quantity: item.quantity,
+            price: item.price
+          }))
+        };
+        
+        toast({
+          title: "Order Placed Successfully!",
+          description: `Your order for ${sweet.name} has been confirmed.`,
+        });
+        
+      } catch (apiError) {
+        console.log('API not available, using mock order success');
+        
+        // Create mock order for receipt
+        orderForReceipt = {
+          id: Date.now().toString(),
+          customer_name: customerName,
+          email: email,
+          total_amount: total,
+          status: 'confirmed',
+          delivery_address: deliveryAddress,
+          phone_number: phoneNumber,
+          notes: notes,
+          created_at: new Date().toISOString(),
+          items: [{
+            sweet_name: `${sweet.name} (${selectedQuantity})`,
+            quantity: quantity,
+            price: subtotal
+          }]
+        };
+        
+        // Save order to localStorage for order history (fallback)
+        try {
+          const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+          existingOrders.push(orderForReceipt);
+          localStorage.setItem('orders', JSON.stringify(existingOrders));
+        } catch (error) {
+          console.error('Error saving order to localStorage:', error);
+        }
+        
+        toast({
+          title: "Order Placed Successfully!",
+          description: `Your order for ${sweet.name} has been confirmed.`,
+        });
       }
 
-      toast({
-        title: "Order Placed Successfully!",
-        description: `Your order for ${sweet.name} has been confirmed.`,
-      });
+      setLastOrder(orderForReceipt);
+      setShowReceipt(true);
 
     } catch (error) {
       toast({
@@ -245,6 +292,7 @@ const PurchasePage = () => {
           onCartClick={() => navigate('/cart')}
           onSearch={() => {}}
           searchQuery=""
+          showAuthModal={() => {}}
         />
         <div className="container mx-auto px-4 py-24">
           <Receipt order={lastOrder} onClose={() => setShowReceipt(false)} />
@@ -264,6 +312,7 @@ const PurchasePage = () => {
         onCartClick={() => navigate('/cart')}
         onSearch={() => {}}
         searchQuery=""
+        showAuthModal={() => {}}
       />
 
       <main className="container mx-auto px-4 py-24">

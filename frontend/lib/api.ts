@@ -47,6 +47,8 @@ interface Order {
   status: string;
   delivery_address?: string;
   phone_number?: string;
+  email?: string;
+  customer_name?: string;
   notes?: string;
   created_at: string;
   updated_at?: string;

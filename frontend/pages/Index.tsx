@@ -268,6 +268,7 @@ const Index = () => {
           onCartClick={() => {}}
           onSearch={setSearchQuery}
           searchQuery={searchQuery}
+          showAuthModal={() => setIsAuthModalOpen(true)}
         />
         
         <main className="container mx-auto px-4 py-8">
@@ -315,6 +316,7 @@ const Index = () => {
         onCartClick={() => {}}
         onSearch={setSearchQuery}
         searchQuery={searchQuery}
+        showAuthModal={() => setIsAuthModalOpen(true)}
       />
 
       <HeroSection

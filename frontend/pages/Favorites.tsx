@@ -89,6 +89,7 @@ const Favorites = () => {
           onCartClick={handleCartClick}
           onSearch={handleSearch}
           searchQuery=""
+          showAuthModal={() => {}}
         />
         <div className="container mx-auto px-6 py-20 text-center">
           <Heart className="h-24 w-24 text-muted-foreground mx-auto mb-6" />
@@ -113,6 +114,7 @@ const Favorites = () => {
         onCartClick={handleCartClick}
         onSearch={handleSearch}
         searchQuery=""
+        showAuthModal={() => {}}
       />
       
       <div className="container mx-auto px-6 py-8">

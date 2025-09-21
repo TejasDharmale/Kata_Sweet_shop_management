@@ -103,6 +103,7 @@ const Purchase = () => {
         onCartClick={() => navigate('/cart')}
         onSearch={setSearchQuery}
         searchQuery={searchQuery}
+        showAuthModal={() => {}}
       />
 
       <main className="container mx-auto px-4 py-12">

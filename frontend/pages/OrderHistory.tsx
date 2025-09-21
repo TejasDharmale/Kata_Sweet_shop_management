@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { ReceiptIcon, Eye, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { apiClient, Order } from '@/lib/api';
 
 interface OrderItem {
   sweet_name: string;
@@ -45,15 +46,45 @@ const OrderHistory = () => {
       return;
     }
 
-    // Load orders from localStorage (in a real app, this would be from the API)
-    const loadOrders = () => {
+    // Load orders from API, fallback to localStorage
+    const loadOrders = async () => {
       try {
-        const savedOrders = localStorage.getItem('orderHistory');
-        if (savedOrders) {
-          setOrders(JSON.parse(savedOrders));
+        // Try to fetch from API first
+        const apiOrders = await apiClient.getUserOrders();
+        
+        // Convert API orders to the expected format
+        const convertedOrders = apiOrders.map(order => ({
+          id: order.id.toString(),
+          customer_name: order.customer_name || '',
+          email: order.email || '',
+          total_amount: order.total_amount,
+          status: order.status,
+          delivery_address: order.delivery_address || '',
+          phone_number: order.phone_number || '',
+          notes: order.notes,
+          created_at: order.created_at,
+          items: order.order_items.map(item => ({
+            sweet_name: item.sweet_name,
+            selected_quantity: item.selected_quantity,
+            quantity: item.quantity,
+            price: item.price
+          }))
+        }));
+        
+        setOrders(convertedOrders);
+        
+      } catch (apiError) {
+        console.log('API not available, loading from localStorage');
+        
+        // Fallback to localStorage
+        try {
+          const savedOrders = localStorage.getItem('orderHistory');
+          if (savedOrders) {
+            setOrders(JSON.parse(savedOrders));
+          }
+        } catch (error) {
+          console.error('Error loading orders from localStorage:', error);
         }
-      } catch (error) {
-        console.error('Error loading orders:', error);
       } finally {
         setLoading(false);
       }
@@ -118,6 +149,7 @@ const OrderHistory = () => {
         onCartClick={() => navigate('/cart')}
         onSearch={handleSearch}
         searchQuery=""
+        showAuthModal={() => {}}
       />
 
       <main className="container mx-auto px-4 py-8">

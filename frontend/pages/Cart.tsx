@@ -246,6 +246,7 @@ This email was sent to ${email}`);
         onCartClick={() => {}}
         onSearch={() => {}}
         searchQuery=""
+        showAuthModal={() => {}}
       />
 
       <main className="container mx-auto px-4 py-24">
