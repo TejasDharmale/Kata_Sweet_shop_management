@@ -23,6 +23,7 @@ const Cart = () => {
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [email, setEmail] = useState('');
   const [customerName, setCustomerName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [notes, setNotes] = useState('');
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
@@ -67,6 +68,15 @@ const Cart = () => {
       toast({
         title: "Email required",
         description: "Please provide an email address to receive your order confirmation.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!phoneNumber.trim()) {
+      toast({
+        title: "Phone number required",
+        description: "Please provide your phone number for delivery contact.",
         variant: "destructive",
       });
       return;
@@ -163,7 +173,7 @@ This email was sent to ${email}`);
         total_amount: total,
         status: 'confirmed',
         delivery_address: deliveryAddress,
-        phone_number: email,
+        phone_number: phoneNumber,
         notes: notes,
         created_at: new Date().toISOString(),
         items: items.map(item => ({
@@ -347,6 +357,18 @@ This email was sent to ${email}`);
                       placeholder="Enter your email address for order confirmation"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      className="mt-1"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="phoneNumber">Phone Number *</Label>
+                    <Input
+                      id="phoneNumber"
+                      type="tel"
+                      placeholder="Enter your phone number"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
                       className="mt-1"
                     />
                   </div>
