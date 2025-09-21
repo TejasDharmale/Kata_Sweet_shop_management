@@ -39,6 +39,19 @@ export function SweetCard({
   const { toast } = useToast();
   const isOutOfStock = sweet.quantity === 0;
 
+  // Calculate dynamic price based on quantity
+  const getPriceForQuantity = (basePrice: number, quantity: string) => {
+    const quantityMultipliers: Record<string, number> = {
+      '250g': 0.6,   // 60% of base price for 250g
+      '500g': 1.0,   // 100% of base price for 500g (base)
+      '1kg': 1.8     // 180% of base price for 1kg
+    };
+    
+    return Math.round(basePrice * (quantityMultipliers[quantity] || 1.0));
+  };
+
+  const currentPrice = getPriceForQuantity(sweet.price, selectedQuantity);
+
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
       toast({
@@ -53,13 +66,13 @@ export function SweetCard({
       onPurchase(sweet.id);
     } else {
       setIsAdding(true);
-      addItem(sweet.id, sweet.name, sweet.price, sweet.image, selectedQuantity, 1);
+      addItem(sweet.id, sweet.name, currentPrice, sweet.image, selectedQuantity, 1);
       
       setTimeout(() => {
         setIsAdding(false);
         toast({
           title: "Added to cart!",
-          description: `${sweet.name} (${selectedQuantity}) has been added to your cart.`,
+          description: `${sweet.name} (${selectedQuantity}) - ₹${currentPrice} has been added to your cart.`,
         });
         navigate('/cart');
       }, 500);
@@ -115,9 +128,16 @@ export function SweetCard({
           )}
           
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
-            <span className="text-xl sm:text-2xl font-bold text-primary">
-              ₹{sweet.price}
-            </span>
+            <div className="flex flex-col">
+              <span className="text-xl sm:text-2xl font-bold text-primary">
+                ₹{currentPrice}
+              </span>
+              {selectedQuantity !== '500g' && (
+                <span className="text-xs text-muted-foreground line-through">
+                  ₹{sweet.price} (500g)
+                </span>
+              )}
+            </div>
             <span className={`text-xs sm:text-sm ${isOutOfStock ? 'text-destructive' : 'text-muted-foreground'}`}>
               {isOutOfStock ? 'Out of Stock' : `${sweet.quantity} in stock`}
             </span>

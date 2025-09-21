@@ -194,7 +194,8 @@ export function ContactUs() {
                         onChange={handleInputChange}
                         required
                         className="border-gray-300 focus:border-orange-500 focus:ring-orange-500"
-                        placeholder="Your full name"
+                        placeholder="Your full name (max 100 characters)"
+                        maxLength={100}
                       />
                     </div>
                     <div className="space-y-2">
@@ -249,15 +250,16 @@ export function ContactUs() {
 
                   <div className="space-y-2">
                     <Label htmlFor="message" className="text-gray-700">Message *</Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      required
-                      rows={6}
-                      className="border-gray-300 focus:border-orange-500 focus:ring-orange-500"
-                      placeholder="Tell us more about your inquiry..."
+                      <Textarea
+                        id="message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        required
+                        rows={6}
+                        className="border-gray-300 focus:border-orange-500 focus:ring-orange-500"
+                        placeholder="Tell us more about your inquiry... (max 300 characters)"
+                        maxLength={300}
                     />
                   </div>
 

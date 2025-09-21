@@ -342,10 +342,11 @@ This email was sent to ${email}`);
                     <Input
                       id="customerName"
                       type="text"
-                      placeholder="Enter your full name"
+                      placeholder="Enter your full name (max 100 characters)"
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
                       className="mt-1"
+                      maxLength={100}
                     />
                   </div>
                   
@@ -353,10 +354,11 @@ This email was sent to ${email}`);
                     <Label htmlFor="address">Delivery Address *</Label>
                     <Textarea
                       id="address"
-                      placeholder="Enter your full delivery address"
+                      placeholder="Enter your full delivery address (max 300 characters)"
                       value={deliveryAddress}
                       onChange={(e) => setDeliveryAddress(e.target.value)}
                       className="mt-1"
+                      maxLength={300}
                     />
                   </div>
                   

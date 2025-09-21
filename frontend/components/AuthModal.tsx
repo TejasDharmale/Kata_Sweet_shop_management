@@ -220,10 +220,11 @@ export function AuthModal({ isOpen, onClose, onLogin, onRegister, onGoogleAuth, 
                         <Input
                           id="register-name"
                           type="text"
-                          placeholder="Enter your full name"
+                          placeholder="Enter your full name (max 100 characters)"
                           value={registerForm.name}
                           onChange={(e) => setRegisterForm({ ...registerForm, name: e.target.value })}
                           className="pl-10"
+                          maxLength={100}
                           required
                         />
                       </div>
